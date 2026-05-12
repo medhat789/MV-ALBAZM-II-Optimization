@@ -136,31 +136,31 @@ const EnhancedShipOptimizer = () => {
     <div className="min-h-screen bg-navy-950 font-body text-slate-200">
       {/* Header */}
       <header data-testid="app-header" className="sticky top-0 z-50 bg-navy-950/90 backdrop-blur-md border-b border-navy-700">
-        <div className="max-w-[1800px] mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Ship className="w-7 h-7 text-cyan-400" />
-            <div>
-              <h1 className="font-heading font-bold text-lg md:text-xl text-white tracking-tight uppercase">
+        <div className="max-w-[1800px] mx-auto px-3 md:px-8 py-3 md:py-4 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
+            <Ship className="w-6 h-6 md:w-7 md:h-7 text-cyan-400 shrink-0" />
+            <div className="min-w-0">
+              <h1 className="font-heading font-bold text-sm md:text-xl text-white tracking-tight uppercase truncate">
                 M/V Al-bazm II
               </h1>
-              <p className="text-xs text-slate-400 font-body tracking-wide">
+              <p className="text-[10px] md:text-xs text-slate-400 font-body tracking-wide truncate">
                 Maritime Fuel Optimization System
               </p>
             </div>
           </div>
-          <div data-testid="live-clock" className="flex items-center gap-2">
+          <div data-testid="live-clock" className="flex items-center gap-1.5 md:gap-2 shrink-0">
             <div className="live-dot w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="text-xs text-slate-400 font-mono">DUBAI UTC+4</span>
-            <span className="font-mono text-cyan-400 text-sm md:text-base font-medium tracking-wider">
+            <span className="hidden md:inline text-xs text-slate-400 font-mono">DUBAI UTC+4</span>
+            <span className="font-mono text-cyan-400 text-[11px] md:text-base font-medium tracking-wider whitespace-nowrap">
               {formatDubaiTime(currentTime)}
             </span>
           </div>
         </div>
       </header>
 
-      <div className="max-w-[1800px] mx-auto px-4 md:px-8 py-6">
+      <div className="max-w-[1800px] mx-auto px-3 md:px-8 py-4 md:py-6">
         {/* Tabs */}
-        <nav data-testid="tab-navigation" className="flex gap-1 mb-6 bg-navy-900 border border-navy-700 rounded-sm p-1 inline-flex">
+        <nav data-testid="tab-navigation" className="flex gap-1 mb-4 md:mb-6 bg-navy-900 border border-navy-700 rounded-sm p-1 overflow-x-auto whitespace-nowrap">
           {tabs.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -169,7 +169,7 @@ const EnhancedShipOptimizer = () => {
                 key={tab.id}
                 data-testid={`tab-${tab.id}`}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-sm ${
+                className={`flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-colors rounded-sm shrink-0 ${
                   isActive
                     ? "bg-cyan-400/10 text-cyan-400 border-b-2 border-cyan-400"
                     : "text-slate-400 hover:text-white"
@@ -341,11 +341,51 @@ const EnhancedShipOptimizer = () => {
             )}
 
             {/* Metrics Row */}
-            <div data-testid="results-metrics" className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div data-testid="results-metrics" className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               <MetricCard icon={MapPin} title="Total Distance" value={results.recommended_route.total_distance_nm} unit="NM" testId="metric-distance" />
               <MetricCard icon={Timer} title="Total Trip Time" value={results.recommended_route.estimated_duration_hours} unit="hours" testId="metric-duration" />
               <MetricCard icon={Fuel} title="Estimated Fuel" value={results.recommended_route.total_fuel_mt} unit="MT" testId="metric-fuel" />
+              <MetricCard icon={Activity} title="CO₂ Emissions" value={results.recommended_route.co2_emissions_mt} unit="MT" testId="metric-co2" />
             </div>
+
+            {/* Physics corrections breakdown */}
+            {results.physics_corrections && (
+              <div data-testid="physics-corrections" className="bg-navy-900/60 border border-navy-700 rounded-sm p-5">
+                <h3 className="font-heading text-base font-semibold text-white uppercase tracking-tight mb-4 flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-cyan-400" />
+                  Physics Corrections Applied
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+                  <div className="bg-navy-800/50 border border-navy-700 rounded-sm p-3 md:p-4">
+                    <p className="font-mono text-xs text-slate-400 uppercase tracking-wider mb-1">Wind Effect</p>
+                    <p className="font-mono text-xl md:text-2xl text-cyan-400">
+                      {((results.physics_corrections.wind_correction.multiplier - 1) * 100).toFixed(1)}%
+                    </p>
+                    <p className="text-xs text-slate-500 font-mono mt-1 capitalize">
+                      {results.physics_corrections.wind_correction.label} · {Math.abs(results.physics_corrections.wind_correction.headwind_component_ms).toFixed(1)} m/s
+                    </p>
+                  </div>
+                  <div className="bg-navy-800/50 border border-navy-700 rounded-sm p-3 md:p-4">
+                    <p className="font-mono text-xs text-slate-400 uppercase tracking-wider mb-1">Wave Effect</p>
+                    <p className="font-mono text-xl md:text-2xl text-cyan-400">
+                      {((results.physics_corrections.wave_correction.multiplier - 1) * 100).toFixed(1)}%
+                    </p>
+                    <p className="text-xs text-slate-500 font-mono mt-1">
+                      H<sub>s</sub> = {results.physics_corrections.wave_correction.wave_height_m} m
+                    </p>
+                  </div>
+                  <div className="bg-navy-800/50 border border-navy-700 rounded-sm p-3 md:p-4">
+                    <p className="font-mono text-xs text-slate-400 uppercase tracking-wider mb-1">Base → Final</p>
+                    <p className="font-mono text-sm text-white">
+                      {results.physics_corrections.base_fuel_mt} → <span className="text-cyan-400 text-lg">{results.physics_corrections.corrected_fuel_mt}</span> MT
+                    </p>
+                    <p className="text-xs text-slate-500 font-mono mt-1">
+                      Total multiplier ×{results.physics_corrections.total_multiplier}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Route Header */}
             <div className="bg-navy-900/60 border border-navy-700 rounded-sm p-1">
@@ -412,35 +452,38 @@ const EnhancedShipOptimizer = () => {
                   <BarChart3 className="w-4 h-4 text-cyan-400" />
                   Pareto-Efficient Alternatives
                 </h3>
-                <div className="border border-navy-700 rounded-sm overflow-hidden">
-                  <table data-testid="alternatives-table" className="min-w-full">
+                <div className="border border-navy-700 rounded-sm overflow-x-auto">
+                  <table data-testid="alternatives-table" className="min-w-full text-sm">
                     <thead>
                       <tr className="bg-navy-900">
-                        <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Route</th>
-                        <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Type</th>
-                        <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Speed (kn)</th>
-                        <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Fuel (MT)</th>
-                        <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Time (hrs)</th>
-                        <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Score</th>
+                        <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">Route</th>
+                        <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Type</th>
+                        <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">Speed (kn)</th>
+                        <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">Fuel (MT)</th>
+                        <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">CO₂ (MT)</th>
+                        <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">Time (hrs)</th>
+                        <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Score</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="border-b border-navy-700 bg-cyan-400/5">
-                        <td className="px-4 py-3 text-sm text-cyan-400 font-medium">{results.recommended_route.route_name}</td>
-                        <td className="px-4 py-3"><span className="bg-navy-700 text-cyan-400 font-mono text-xs px-2 py-0.5 rounded-sm uppercase">Optimal</span></td>
-                        <td className="px-4 py-3 font-mono text-sm text-cyan-400">{results.recommended_route.avg_speed_kn?.toFixed(1) || (results.recommended_route.total_distance_nm / results.recommended_route.estimated_duration_hours).toFixed(1)}{results.speed_profile?.mode === "variable" ? " (var)" : ""}</td>
-                        <td className="px-4 py-3 font-mono text-sm text-white">{results.recommended_route.total_fuel_mt.toFixed(2)}</td>
-                        <td className="px-4 py-3 font-mono text-sm text-white">{results.recommended_route.estimated_duration_hours.toFixed(1)}</td>
-                        <td className="px-4 py-3 font-mono text-sm text-cyan-400">{results.recommended_route.optimization_score.toFixed(3)}</td>
+                        <td className="px-3 md:px-4 py-3 text-sm text-cyan-400 font-medium whitespace-nowrap">{results.recommended_route.route_name}</td>
+                        <td className="px-3 md:px-4 py-3"><span className="bg-navy-700 text-cyan-400 font-mono text-xs px-2 py-0.5 rounded-sm uppercase">Optimal</span></td>
+                        <td className="px-3 md:px-4 py-3 font-mono text-sm text-cyan-400 whitespace-nowrap">{results.recommended_route.avg_speed_kn?.toFixed(1) || (results.recommended_route.total_distance_nm / results.recommended_route.estimated_duration_hours).toFixed(1)}{results.speed_profile?.mode === "variable" ? " (var)" : ""}</td>
+                        <td className="px-3 md:px-4 py-3 font-mono text-sm text-white">{results.recommended_route.total_fuel_mt.toFixed(2)}</td>
+                        <td className="px-3 md:px-4 py-3 font-mono text-sm text-amber-400">{results.recommended_route.co2_emissions_mt?.toFixed(2) || "—"}</td>
+                        <td className="px-3 md:px-4 py-3 font-mono text-sm text-white">{results.recommended_route.estimated_duration_hours.toFixed(1)}</td>
+                        <td className="px-3 md:px-4 py-3 font-mono text-sm text-cyan-400">{results.recommended_route.optimization_score.toFixed(3)}</td>
                       </tr>
                       {results.alternative_routes.map((route) => (
                         <tr key={route.route_id} className="border-b border-navy-700 hover:bg-navy-800/50 transition-colors">
-                          <td className="px-4 py-3 text-sm text-slate-300">{route.route_name}</td>
-                          <td className="px-4 py-3"><span className="bg-navy-700 text-slate-400 font-mono text-xs px-2 py-0.5 rounded-sm uppercase">{route.route_type}</span></td>
-                          <td className="px-4 py-3 font-mono text-sm text-slate-300">{route.avg_speed_kn?.toFixed(1) ?? "—"}</td>
-                          <td className="px-4 py-3 font-mono text-sm text-slate-300">{route.total_fuel_mt.toFixed(2)}</td>
-                          <td className="px-4 py-3 font-mono text-sm text-slate-300">{route.estimated_duration_hours.toFixed(1)}</td>
-                          <td className="px-4 py-3 font-mono text-sm text-slate-400">{route.optimization_score.toFixed(3)}</td>
+                          <td className="px-3 md:px-4 py-3 text-sm text-slate-300 whitespace-nowrap">{route.route_name}</td>
+                          <td className="px-3 md:px-4 py-3"><span className="bg-navy-700 text-slate-400 font-mono text-xs px-2 py-0.5 rounded-sm uppercase">{route.route_type}</span></td>
+                          <td className="px-3 md:px-4 py-3 font-mono text-sm text-slate-300">{route.avg_speed_kn?.toFixed(1) ?? "—"}</td>
+                          <td className="px-3 md:px-4 py-3 font-mono text-sm text-slate-300">{route.total_fuel_mt.toFixed(2)}</td>
+                          <td className="px-3 md:px-4 py-3 font-mono text-sm text-amber-400/80">{route.co2_emissions_mt?.toFixed(2) || "—"}</td>
+                          <td className="px-3 md:px-4 py-3 font-mono text-sm text-slate-300">{route.estimated_duration_hours.toFixed(1)}</td>
+                          <td className="px-3 md:px-4 py-3 font-mono text-sm text-slate-400">{route.optimization_score.toFixed(3)}</td>
                         </tr>
                       ))}
                     </tbody>

@@ -29,6 +29,7 @@ from ship_ml import AlbazmMLSystem, MAX_SPEED_KNOTS, OPTIMAL_RPM_MIN, OPTIMAL_RP
 from route_manager import RouteManager  # noqa: E402
 from live_weather import fetch_route_weather  # noqa: E402
 from variable_speed import segment_distances, allocate_variable_speeds  # noqa: E402
+from physics_corrections import apply_corrections, ROUTE_COURSES, HFO_CO2_FACTOR  # noqa: E402
 
 logging.basicConfig(
     level=logging.INFO,
@@ -76,10 +77,14 @@ async def startup_event() -> None:
 
     try:
         ml_system = AlbazmMLSystem()
-        engine_file = str(BASE_DIR / "engine_data.csv")
-        ml_system.load_and_prepare_data(engine_file)
-        ml_system.train_model()
-        logger.info("✅ ML model trained — R²=%.3f, samples=%d",
+        # Try to load cached model first — saves ~5s on restart
+        if ml_system.load_model():
+            logger.info("⚡ Using cached ML model (skipped retraining)")
+        else:
+            engine_file = str(BASE_DIR / "engine_data.csv")
+            ml_system.load_and_prepare_data(engine_file)
+            ml_system.train_model()
+        logger.info("✅ ML model ready — R²=%.3f, samples=%d",
                     ml_system.model_stats.get("test_r2", 0),
                     ml_system.model_stats.get("training_samples", 0))
     except Exception as e:
@@ -231,7 +236,27 @@ async def optimize_route(req: OptimizationRequest):
         wind_speed=req.wind_speed or weather_data.get("average", {}).get("wind_speed", 5.0),
         route=route_key,
     )
-    fuel_consumption = float(prediction.get("predicted_fuel_mt", 0) or 0)
+    base_fuel_ml = float(prediction.get("predicted_fuel_mt", 0) or 0)
+
+    # Apply physics post-corrections (wind direction + wave height)
+    course_deg = ROUTE_COURSES.get(route_key, 270.0)
+    dep_wx = (weather_data or {}).get("departure") or {}
+    mid_wx = (weather_data or {}).get("midpoint") or {}
+    arr_wx = (weather_data or {}).get("arrival") or {}
+    avg_wave = None
+    wave_values = [w.get("wave_height") for w in (dep_wx, mid_wx, arr_wx) if isinstance(w.get("wave_height"), (int, float))]
+    if wave_values:
+        avg_wave = sum(wave_values) / len(wave_values)
+    corrections = apply_corrections(
+        base_fuel_mt=base_fuel_ml,
+        speed_kn=optimal_speed,
+        wind_speed_ms=req.wind_speed or 0.0,
+        wind_direction_deg=req.wind_direction or 90.0,
+        course_deg=course_deg,
+        wave_height_m=avg_wave or 0.0,
+    )
+    fuel_consumption = corrections["corrected_fuel_mt"]
+    co2_emissions = corrections["co2_emissions_mt"]
 
     # Format waypoints — each with its OWN segment distance + suggested speed
     formatted_waypoints: List[Dict] = []
@@ -265,7 +290,17 @@ async def optimize_route(req: OptimizationRequest):
             wind_speed=req.wind_speed or weather_data.get("average", {}).get("wind_speed", 5.0),
             route=route_key,
         )
-        alt_fuel = float(alt_pred.get("predicted_fuel_mt", 0) or 0)
+        alt_base_fuel = float(alt_pred.get("predicted_fuel_mt", 0) or 0)
+        alt_corr = apply_corrections(
+            base_fuel_mt=alt_base_fuel,
+            speed_kn=fixed_speed,
+            wind_speed_ms=req.wind_speed or 0.0,
+            wind_direction_deg=req.wind_direction or 90.0,
+            course_deg=course_deg,
+            wave_height_m=avg_wave or 0.0,
+        )
+        alt_fuel = alt_corr["corrected_fuel_mt"]
+        alt_co2 = alt_corr["co2_emissions_mt"]
         alt_waypoints = []
         for j, wp in enumerate(raw_waypoints):
             alt_waypoints.append({
@@ -282,6 +317,7 @@ async def optimize_route(req: OptimizationRequest):
             "total_distance_nm": round(total_distance, 2),
             "estimated_duration_hours": round(alt_duration, 2),
             "total_fuel_mt": round(alt_fuel, 3),
+            "co2_emissions_mt": round(alt_co2, 3),
             "total_cost_usd": round(alt_fuel * 650, 2),
             "optimization_score": round(total_distance / alt_fuel if alt_fuel > 0 else 0, 3),
             "route_type": route_type,
@@ -318,12 +354,14 @@ async def optimize_route(req: OptimizationRequest):
             "total_distance_nm": round(total_distance, 2),
             "estimated_duration_hours": round(actual_duration, 2),
             "total_fuel_mt": round(fuel_consumption, 3),
+            "co2_emissions_mt": round(co2_emissions, 3),
             "total_cost_usd": round(fuel_consumption * 650, 2),
             "optimization_score": round(total_distance / fuel_consumption if fuel_consumption > 0 else 0, 3),
             "route_type": "optimal",
             "avg_speed_kn": round(optimal_speed, 1),
             "waypoints": formatted_waypoints,
         },
+        "physics_corrections": corrections,
         "alternative_routes": alternatives,
         "weather_conditions": weather_data,
         "optimization_insights": {

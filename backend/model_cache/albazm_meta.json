@@ -1,0 +1,102 @@
+{
+  "saved_at": "2026-05-12T01:05:26.767266Z",
+  "feature_names": [
+    "speed_knots",
+    "speed_squared",
+    "speed_cubed",
+    "trip_hours",
+    "engine_load_pct",
+    "rpm_normalized",
+    "rpm_optimal",
+    "wind_speed",
+    "wind_resistance",
+    "sea_state",
+    "route_encoded",
+    "season"
+  ],
+  "model_stats": {
+    "train_r2": 0.8804118808712569,
+    "test_r2": 0.5733546959077107,
+    "test_rmse": 0.6091431207039704,
+    "test_mae": 0.4828629406956361,
+    "cv_mean": 0.5510141484930474,
+    "cv_std": 0.05755845601969743,
+    "training_samples": 262,
+    "test_samples": 113,
+    "features_used": 12
+  },
+  "feature_importance": [
+    {
+      "feature": "wind_speed",
+      "importance": 0.4492306726026908
+    },
+    {
+      "feature": "engine_load_pct",
+      "importance": 0.21846188883748907
+    },
+    {
+      "feature": "rpm_normalized",
+      "importance": 0.08682236031914328
+    },
+    {
+      "feature": "wind_resistance",
+      "importance": 0.08529898615569906
+    },
+    {
+      "feature": "trip_hours",
+      "importance": 0.06746679429413345
+    },
+    {
+      "feature": "season",
+      "importance": 0.023474474109910087
+    },
+    {
+      "feature": "sea_state",
+      "importance": 0.015957572578738956
+    },
+    {
+      "feature": "speed_cubed",
+      "importance": 0.014795022943853882
+    },
+    {
+      "feature": "speed_knots",
+      "importance": 0.013936962762899992
+    },
+    {
+      "feature": "speed_squared",
+      "importance": 0.013721839923284596
+    },
+    {
+      "feature": "route_encoded",
+      "importance": 0.010833425472156847
+    },
+    {
+      "feature": "rpm_optimal",
+      "importance": 0.0
+    }
+  ],
+  "training_statistics": {
+    "total_voyages": 375,
+    "date_range": {
+      "start": "2024-01-01",
+      "end": "2025-11-25"
+    },
+    "fuel_consumption": {
+      "min_mt": 5.321030615120374,
+      "max_mt": 9.531695937596696,
+      "mean_mt": 7.347328169318326,
+      "std_mt": 0.8472524283363096
+    },
+    "operational": {
+      "speed_range_knots": "3.3 - 13.0",
+      "duration_range_hours": "8.1 - 36.8",
+      "mean_speed_knots": 10.2368,
+      "mean_duration_hours": 12.0408
+    },
+    "routes": {
+      "Ruwais_to_Khalifa": 188,
+      "Khalifa_to_Ruwais": 186,
+      "Unknown": 1
+    }
+  }
+}

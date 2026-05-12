@@ -6,6 +6,8 @@ Master's Thesis - Clean Implementation
 
 import pandas as pd
 import numpy as np
+import joblib
+import json
 from datetime import datetime
 import logging
 from typing import Dict, List, Tuple, Any
@@ -15,6 +17,11 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
+MODEL_CACHE_DIR = BASE_DIR / "model_cache"
+MODEL_CACHE_DIR.mkdir(exist_ok=True)
+MODEL_PATH = MODEL_CACHE_DIR / "albazm_model.joblib"
+SCALER_PATH = MODEL_CACHE_DIR / "albazm_scaler.joblib"
+META_PATH = MODEL_CACHE_DIR / "albazm_meta.json"
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -341,8 +348,55 @@ class AlbazmMLSystem:
         logger.info(f"\n🎯 Top 3 Important Features:")
         for idx, row in feature_importance.head(3).iterrows():
             logger.info(f"   {row['feature']}: {row['importance']:.3f}")
-        
+
+        # Auto-save trained model + scaler + metadata
+        try:
+            self.save_model()
+        except Exception as e:
+            logger.warning(f"Could not auto-save model: {e}")
+
         return self.model_stats
+
+    def save_model(self):
+        """Persist trained model + scaler + metadata so we can skip retraining on restart."""
+        if self.model is None:
+            raise ValueError("No model to save — train first.")
+        joblib.dump(self.model, MODEL_PATH)
+        joblib.dump(self.scaler, SCALER_PATH)
+        meta = {
+            "saved_at": datetime.utcnow().isoformat() + "Z",
+            "feature_names": list(self.feature_names),
+            "model_stats": {k: (v if not isinstance(v, (np.floating, np.integer)) else float(v))
+                            for k, v in self.model_stats.items()
+                            if k != "feature_importance"},
+            "feature_importance": self.model_stats.get("feature_importance", []),
+            "training_statistics": self.get_training_statistics(),
+        }
+        with open(META_PATH, "w") as f:
+            json.dump(meta, f, indent=2, default=str)
+        # Cache training stats on self so they survive without training_data df
+        self._cached_training_stats = meta["training_statistics"]
+        logger.info(f"💾 Model saved → {MODEL_PATH.name} ({MODEL_PATH.stat().st_size//1024} KB)")
+
+    def load_model(self) -> bool:
+        """Try to load a previously trained model. Returns True on success."""
+        if not (MODEL_PATH.exists() and SCALER_PATH.exists() and META_PATH.exists()):
+            return False
+        try:
+            self.model = joblib.load(MODEL_PATH)
+            self.scaler = joblib.load(SCALER_PATH)
+            with open(META_PATH) as f:
+                meta = json.load(f)
+            self.feature_names = meta.get("feature_names", [])
+            self.model_stats = meta.get("model_stats", {})
+            self.model_stats["feature_importance"] = meta.get("feature_importance", [])
+            self._cached_training_stats = meta.get("training_statistics", {})
+            logger.info(f"📦 Loaded cached model from {MODEL_PATH.name} "
+                        f"(saved {meta.get('saved_at')})")
+            return True
+        except Exception as e:
+            logger.warning(f"Could not load cached model: {e}")
+            return False
     
     def predict_fuel(self, speed: float, duration: float, distance: float = None, 
                     wind_speed: float = 8.5, route: str = 'Khalifa_to_Ruwais',
@@ -463,7 +517,8 @@ class AlbazmMLSystem:
     def get_training_statistics(self) -> Dict:
         """Get training data statistics for academic reporting"""
         if self.training_data is None:
-            return {}
+            # Fall back to cached stats if model was loaded from disk
+            return getattr(self, "_cached_training_stats", {}) or {}
         
         df = self.training_data
         
