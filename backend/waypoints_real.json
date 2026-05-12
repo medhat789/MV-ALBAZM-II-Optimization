@@ -1,0 +1,172 @@
+{
+  "Khalifa_to_Ruwais": {
+    "name": "Khalifa_to_Ruwais",
+    "waypoints": [
+      {
+        "name": "BUOY KP 10",
+        "latitude": 24.87093,
+        "longitude": 54.63802,
+        "course_to_next": 357.6
+      },
+      {
+        "name": "B. PILOT STAION",
+        "latitude": 24.89978,
+        "longitude": 54.63668,
+        "course_to_next": 313.0
+      },
+      {
+        "name": "FAIRWAY BUOY",
+        "latitude": 24.95613,
+        "longitude": 54.57007,
+        "course_to_next": 306.6
+      },
+      {
+        "name": "AT SEA",
+        "latitude": 25.0387,
+        "longitude": 54.4473,
+        "course_to_next": 277.6
+      },
+      {
+        "name": "AT SEA",
+        "latitude": 25.1553,
+        "longitude": 53.47642,
+        "course_to_next": 246.4
+      },
+      {
+        "name": "ZAQQUM LB",
+        "latitude": 25.1295,
+        "longitude": 53.41133,
+        "course_to_next": 229.1
+      },
+      {
+        "name": "ZAQQUM E",
+        "latitude": 25.05588,
+        "longitude": 53.31748,
+        "course_to_next": 251.8
+      },
+      {
+        "name": "ZAQQUM W",
+        "latitude": 24.95602,
+        "longitude": 52.98238,
+        "course_to_next": 191.3
+      },
+      {
+        "name": "OUTER FAIRWAY",
+        "latitude": 24.75645,
+        "longitude": 52.93848,
+        "course_to_next": 224.9
+      },
+      {
+        "name": "EG 2",
+        "latitude": 24.57037,
+        "longitude": 52.73428,
+        "course_to_next": 211.3
+      },
+      {
+        "name": "N.CHANNEL BUOY",
+        "latitude": 24.50063,
+        "longitude": 52.68767,
+        "course_to_next": 177.9
+      },
+      {
+        "name": "EG4",
+        "latitude": 24.45137,
+        "longitude": 52.68963,
+        "course_to_next": 163.1
+      },
+      {
+        "name": "EG3",
+        "latitude": 24.44152,
+        "longitude": 52.69292,
+        "course_to_next": 182.2
+      }
+    ],
+    "total_distance_nm": 134.55,
+    "number_of_waypoints": 13
+  },
+  "Ruwais_to_Khalifa": {
+    "name": "Ruwais_to_Khalifa",
+    "waypoints": [
+      {
+        "name": "EG 3",
+        "latitude": 24.44155,
+        "longitude": 52.6929,
+        "course_to_next": 341.8
+      },
+      {
+        "name": "EG4",
+        "latitude": 24.45113,
+        "longitude": 52.68943,
+        "course_to_next": 358.1
+      },
+      {
+        "name": "AT SEA",
+        "latitude": 24.52445,
+        "longitude": 52.68672,
+        "course_to_next": 43.6
+      },
+      {
+        "name": "AT SEA",
+        "latitude": 24.57032,
+        "longitude": 52.73477,
+        "course_to_next": 41.7
+      },
+      {
+        "name": "AT SEA",
+        "latitude": 24.6627,
+        "longitude": 52.82523,
+        "course_to_next": 45.2
+      },
+      {
+        "name": "OUTER FAIR WAY",
+        "latitude": 24.7564,
+        "longitude": 52.92923,
+        "course_to_next": 0
+      },
+      {
+        "name": "ZAQQUM WEST",
+        "latitude": 24.931,
+        "longitude": 53.01498,
+        "course_to_next": 71.6
+      },
+      {
+        "name": "ZAQQUM E",
+        "latitude": 25.02708,
+        "longitude": 53.33393,
+        "course_to_next": 49.2
+      },
+      {
+        "name": "ZAQQUM LB",
+        "latitude": 25.12668,
+        "longitude": 53.46115,
+        "course_to_next": 96.4
+      },
+      {
+        "name": "AT SEA",
+        "latitude": 25.0232,
+        "longitude": 54.47973,
+        "course_to_next": 131.4
+      },
+      {
+        "name": "AT SEA",
+        "latitude": 24.97342,
+        "longitude": 54.54213,
+        "course_to_next": 126.1
+      },
+      {
+        "name": "AT SEA",
+        "latitude": 24.93107,
+        "longitude": 54.6063,
+        "course_to_next": 138.4
+      },
+      {
+        "name": "PILOT STAION",
+        "latitude": 24.89997,
+        "longitude": 54.63677,
+        "course_to_next": 228.8
+      }
+    ],
+    "total_distance_nm": 130.22,
+    "number_of_waypoints": 13
+  }
+}

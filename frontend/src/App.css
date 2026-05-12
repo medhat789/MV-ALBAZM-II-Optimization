@@ -1,34 +1,45 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0C1524; }
+::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+/* Map */
+#route-map {
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid #1E293B;
+}
+.leaflet-popup-content-wrapper {
+  background: #0C1524;
+  color: #e2e8f0;
+  border: 1px solid #1E293B;
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.leaflet-popup-tip { background: #0C1524; }
+.leaflet-popup-content {
+  margin: 8px 12px;
+  line-height: 1.5;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+/* Datetime input dark theme */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-}
+select option { background: #0C1524; color: #e2e8f0; }
 
-.App-link {
-    color: #61dafb;
-}
+.metric-card { transition: border-color 0.2s ease, background-color 0.2s ease; }
+.metric-card:hover { border-color: rgba(0, 240, 255, 0.3); background-color: rgba(12, 21, 36, 0.8); }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+@keyframes bar-fill { from { width: 0; } }
+.feature-bar { animation: bar-fill 0.8s ease-out forwards; }
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 4px #10b981; }
+  50% { opacity: 0.5; box-shadow: 0 0 8px #10b981; }
 }
+.live-dot { animation: glow-pulse 2s ease-in-out infinite; }

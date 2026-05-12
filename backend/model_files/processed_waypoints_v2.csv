@@ -1,0 +1,27 @@
+Route_Direction,Waypoint_Order,Waypoint_Name,Latitude,Longitude,Course_To_Next_WP
+Ruwais_to_Khalifa,1,EG 3,24.44155,52.6929,341.8
+Ruwais_to_Khalifa,2,EG4,24.45113,52.68943,358.1
+Ruwais_to_Khalifa,3,AT SEA,24.52445,52.68672,43.6
+Ruwais_to_Khalifa,4,AT SEA,24.57032,52.73477,41.7
+Ruwais_to_Khalifa,5,AT SEA,24.6627,52.82523,45.2
+Ruwais_to_Khalifa,6,OUTER FAIR WAY,24.7564,52.92923,169.0
+Ruwais_to_Khalifa,7,ZAQQUM WEST,24.931,53.01498,71.6
+Ruwais_to_Khalifa,8,ZAQQUM E,25.02708,53.33393,49.2
+Ruwais_to_Khalifa,9,ZAQQUM LB,25.12668,53.46115,96.4
+Ruwais_to_Khalifa,10,AT SEA,25.0232,54.47973,131.4
+Ruwais_to_Khalifa,11,AT SEA,24.97342,54.54213,126.1
+Ruwais_to_Khalifa,12,AT SEA,24.93107,54.6063,138.4
+Ruwais_to_Khalifa,13,PILOT STAION,24.89997,54.63677,228.8
+Khalifa_to_Ruwais,1,BUOY KP 10,24.87093,54.63802,357.6
+Khalifa_to_Ruwais,2,B. PILOT STAION,24.89978,54.63668,313.0
+Khalifa_to_Ruwais,3,FAIRWAY BUOY,24.95613,54.57007,306.6
+Khalifa_to_Ruwais,4,AT SEA,25.0387,54.4473,277.6
+Khalifa_to_Ruwais,5,AT SEA,25.1553,53.47642,246.4
+Khalifa_to_Ruwais,6,ZAQQUM LB,25.1295,53.41133,229.1
+Khalifa_to_Ruwais,7,ZAQQUM E,25.05588,53.31748,251.8
+Khalifa_to_Ruwais,8,ZAQQUM W,24.95602,52.98238,191.3
+Khalifa_to_Ruwais,9,OUTER FAIRWAY,24.75645,52.93848,224.9
+Khalifa_to_Ruwais,10,EG 2,24.57037,52.73428,211.3
+Khalifa_to_Ruwais,11,N.CHANNEL BUOY,24.50063,52.68767,177.9
+Khalifa_to_Ruwais,12,EG4,24.45137,52.68963,163.1
+Khalifa_to_Ruwais,13,EG3,24.44152,52.69292,182.2

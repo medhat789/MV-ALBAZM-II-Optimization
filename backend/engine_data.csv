@@ -1,0 +1,738 @@
+Event;Date;Time;Total trip time;Place;Slip;Total Distance;Avg speed;FOC;LOAD ;RPM
+FAOP;23/1/2024;18:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;24/1/2024;6:54;12.4;Arrival. khalifa ;20.6;130;10.5;6.4 Ê;42%;124
+;;;;;;;; Ê;;
+FAOP;24/1/2024;20:30;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;25/1/2024;7:18;10.8;Arrival .ruwais;14.3;123;11.4;5.9 Ê;45%;125
+;;;;;;;; Ê;;
+FAOP;26/1/2024;5:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;26/1/2024;18:00;12.4;Arrival. khalifa ;22.5;127;10.2;6.4 Ê;42%;125
+;;;;;;;; Ê;;
+FAOP;27/1/2024;11:18;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;27/1/2024;22:30;11.2;Arrival .ruwais;16.7;123;11;5.8 Ê;45%;124
+;;;;;;;; Ê;;
+FAOP;29/1/2024;4:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;29/1/2024;16:54;12.4;Arrival. khalifa ;23.4;127;10.2;6.7 Ê;58%;127
+;;;;;;;; Ê;;
+FAOP;30/1/2024;6:18;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;30/1/2024;18:00;11.7;Arrival .ruwais;19.8;123;10.5;6.2 Ê;44%;124
+;;;;;;;; Ê;;
+FAOP;31/1/2024;14:12;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;1/2/2024;2:00;11.8;Arrival. khalifa ;21;123;10.4;6.1 Ê;42%;124
+;;;;;;;; Ê;;
+FAOP;1/2/2024;17:24;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;2/2/2024;4:18;10.9;Arrival .ruwais;16.4;120;11;5.9 Ê;44%;124
+;;;;;;;; Ê;;
+FAOP;4/2/2024;18:48;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;5/2/2024;7:12;12.4;Arrival. khalifa ;20.9;130;10.5;6.4 Ê;42%;125
+;;;;;;;; Ê;;
+FAOP;5/2/2024;23:48;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;6/2/2024;12:18;12.5;Arrival .ruwais;21.8;128;10.2;6.6 Ê;44%;123
+;;;;;;;; Ê;;
+FAOP;15/2/2024;13:42;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;16/2/2024;2:42;13;Arrival. khalifa ;24;130;10;6.7 Ê;48%;124
+;;;;;;;; Ê;;
+FAOP;16/2/2024;22:48;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;17/2/2024;10:00;11.2;Arrival .ruwais;16.7;123;11;5.9 Ê;42%;124
+;;;;;;;; Ê;;
+FAOP;19/2/2024;23:24;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;20/2/2024;12:42;13.3;Arrival. khalifa ;24.6;132;9.9;6.6 Ê;44%;124
+;;;;;;;; Ê;;
+FAOP;21/2/2024;3:24;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;21/2/2024;16:42;13.3;Arrival .ruwais;25.8;130;9.8;7.1 Ê;46%;124
+;;;;;;;; Ê;;
+FAOP;22/2/2024;16:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;23/2/2024;4:18;12.3;Arrival. khalifa ;25.2;123;10;6.5 Ê;44%;126
+;;;;;;;; Ê;;
+FAOP;23/2/2024;19:00;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;24/2/2024;6:48;11.8;Arrival .ruwais;20.6;123;10.4;6.1 Ê;66%;124
+;;;;;;;; Ê;;
+FAOP;25/2/2024;4:24;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;25/2/2024;16:00;11.6;Arrival. khalifa ;25;130;11.2;8.4 Ê;48%;142
+;;;;;;;; Ê;;
+FAOP;26/2/2024;6:12;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;26/2/2024;17:18;11.1;Arrival .ruwais;23;127;11.4;8.2 Ê;64%;140
+;;;;;;;; Ê;;
+FAOP;27/2/2024;16:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;28/2/2024;2:42;10.7;Arrival. khalifa ;21.3;128;12;7.8 Ê;66%;143
+;;;;;;;; Ê;;
+FAOP;29/2/2024;18:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;1/3/2024;9:18;14.8;Arrival .ruwais;31.9;144;9.7;1.3 Ê;43%;135
+;;;;;;;; Ê;;
+FAOP;2/3/2024;21:24;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;3/3/2024;9:42;12.3;Arrival. khalifa ;24.7;123;10;6.4 Ê;44%;125
+;;;;;;;; Ê;;
+FAOP;4/3/2024;3:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;4/3/2024;13:42;10.1;Arrival .ruwais;19;123;12.2;7.4 Ê;63%;142
+;;;;;;;; Ê;;
+FAOP;5/3/2024;10:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;5/3/2024;20:48;10.2;Arrival. khalifa ;22.3;120;11.8;7.7 Ê;67%;143
+;;;;;;;; Ê;;
+FAOP;6/3/2024;13:30;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;7/3/2024;0:12;10.7;Arrival .ruwais;20.5;126;11.8;7.8 Ê;63%;140
+;;;;;;;; Ê;;
+FAOP;7/3/2024;21:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;8/3/2024;9:06;12.1;Arrival. khalifa ;28.6;123;10.2;8.0Ê;67%;134
+;;;;;;;; Ê;;
+FAOP;9/3/2024;3:12;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;9/3/2024;13:30;10.3;Arrival .ruwais;19.3;124;12;8.1 Ê;64%;141
+;;;;;;;; Ê;;
+FAOP;10/3/2024;14:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;11/3/2024;0:30;10.5;Arrival. khalifa ;23.4;122;11.6;8.2 Ê;66%;143
+;;;;;;;; Ê;;
+FAOP;11/3/2024;21:18;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;12/3/2024;7:00;9.7;Arrival .ruwais;15.7;123;12.7;7.6 Ê;64%;142
+;;;;;;;; Ê;;
+FAOP;13/3/2024;4:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;13/3/2024;14:42;10.7;Arrival. khalifa ;24;123;11.5;8.2 Ê;64%;143
+;;;;;;;; Ê;;
+FAOP;14/3/2024;20:30;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;15/3/2024;6:00;9.5;Arrival .ruwais;20.1;114;12;7.4 Ê;66%;142
+;;;;;;;; Ê;;
+FAOP;16/3/2024;2:12;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;16/3/2024;14:06;11.9;Arrival. khalifa ;26;120.1;10.1;7.0Ê;48%;129
+;;;;;;;; Ê;;
+FAOP;19/3/2024;17:18;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;20/3/2024;6:48;13.5;Arrival. khalifa ;27.8;127;9.4;7.2 Ê;43%;123
+;;;;;;;; Ê;;
+FAOP;21/3/2024;0:48;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;21/3/2024;14:00;13.2;Arrival .ruwais;27.9;125;9.5;7.2 Ê;42%;124
+;;;;;;;; Ê;;
+FAOP;22/3/2024;13:24;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;23/3/2024;2:06;12.7;Arrival. khalifa ;24.5;125;9.8;6.8 Ê;43%;123
+;;;;;;;; Ê;;
+FAOP;23/3/2024;17:48;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;24/3/2024;5:00;11.2;Arrival .ruwais;18;120;10.7;6.0Ê;44%;123
+;;;;;;;; Ê;;
+FAOP;25/3/2024;18:42;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;26/3/2024;7:42;13;Arrival. khalifa ;26.6;125;9.6;6.8 Ê;45%;123
+;;;;;;;; Ê;;
+FAOP;27/3/2024;10:00;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;27/3/2024;23:12;13.2;Arrival .ruwais;27.5;126;9.5;7.1 Ê;45%;124
+;;;;;;;; Ê;;
+FAOP;28/3/2024;22:18;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;29/3/2024;11:00;12.7;Arrival. khalifa ;26.5;123;9.7;6.7 Ê;45%;124
+;;;;;;;; Ê;;
+FAOP;1/4/2024;9:12;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;1/4/2024;21:00;11.8;Arrival. khalifa ;21;122;10.3;6.3 Ê;45%;123
+;;;;;;;; Ê;;
+FAOP;2/4/2024;19:24;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;3/4/2024;7:00;11.6;Arrival .ruwais;19.7;123;10.6;6.3 Ê;47%;124
+;;;;;;;; Ê;;
+FAOP;4/4/2024;7:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;4/4/2024;18:00;11;Arrival. khalifa ;21.4;120;10.9;6.7 Ê;53%;131
+;;;;;;;; Ê;;
+FAOP;5/4/2024;17:48;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;6/4/2024;5:12;11.4;Arrival .ruwais;18.9;120;10.5;6.1 Ê;43%;122
+;;;;;;;; Ê;;
+FAOP;7/4/2024;3:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;7/4/2024;15:42;12.1;Arrival. khalifa ;26.5;122;10.1;7.4 Ê;44%;129
+;;;;;;;; Ê;;
+FAOP;8/4/2024;9:42;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;8/4/2024;21:12;11.5;Arrival .ruwais;18;124;10.8;6.3 Ê;42%;124
+;;;;;;;; Ê;;
+FAOP;9/4/2024;20:42;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;10/4/2024;9:12;12.5;Arrival. khalifa ;24.9;123;9.8;6.6 Ê;48%;124
+;;;;;;;; Ê;;
+FAOP;11/4/2024;2:12;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;11/4/2024;14:24;12.2;Arrival .ruwais;22.8;123;10.1;6.3 Ê;43%;123
+;;;;;;;; Ê;;
+FAOP;20/4/2024;14:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;21/4/2024;1:42;11.6;Arrival. khalifa ;19.5;122;10.5;6.1 Ê;44%;123
+;;;;;;;; Ê;;
+FAOP;21/4/2024;19:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;22/4/2024;5:12;9.6;Arrival .ruwais;16;118.7;12.4;6.7 Ê;59%;137
+;;;;;;;; Ê;;
+FAOP;25/4/2024;13:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;26/4/2024;2:30;12.9;Arrival .ruwais;17.5;136.2;10.6;6.3 Ê;41%;121
+;;;;;;;; Ê;;
+FAOP;27/4/2024;0:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;27/4/2024;11:30;10.9;Arrival. khalifa ;23.2;120.8;11.1;7.3 Ê;64%;136
+;;;;;;;; Ê;;
+FAOP;28/4/2024;8:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;28/4/2024;17:48;9.7;Arrival .ruwais;20.9;113.2;11.7;6.9 Ê;61%;139
+;;;;;;;; Ê;;
+FAOP;29/4/2024;18:42;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;30/4/2024;6:30;11.8;Arrival. khalifa ;23.3;119.5;10.1;6.3 Ê;39%;124
+;;;;;;;; Ê;;
+FAOP;1/5/2024;0:12;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;1/5/2024;11:00;10.8;Arrival .ruwais;21.5;119.8;11.1;6.9 Ê;44%;133
+;;;;;;;; Ê;;
+FAOP;3/5/2024;10:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;3/5/2024;22:00;11.9;Arrival. khalifa ;28;115.2;9.7;6.7 Ê;46%;126
+;;;;;;;; Ê;;
+FAOP;5/5/2024;9:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;5/5/2024;18:00;8.9;Arrival .ruwais;20.8;106;11.9;6.9 Ê;66%;142
+;;;;;;;; Ê;;
+FAOP;6/5/2024;14:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;7/5/2024;2:00;11.9;Arrival. khalifa ;26.6;119.7;10.1;7.1 Ê;48%;129
+;;;;;;;; Ê;;
+FAOP;7/5/2024;19:00;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;8/5/2024;5:54;10.9;Arrival .ruwais;15.8;118.3;10.9;5.7 Ê;44%;122
+;;;;;;;; Ê;;
+FAOP;10/5/2024;6:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;10/5/2024;17:00;10.9;Arrival. khalifa ;23;123.1;11.3;8.4 Ê;64%;139
+;;;;;;;; Ê;;
+FAOP;11/5/2024;11:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;11/5/2024;22:42;11.6;Arrival .ruwais;21;118;10.2;6.2 Ê;40%;121
+;;;;;;;; Ê;;
+FAOP;12/5/2024;17:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;13/5/2024;5:00;11.9;Arrival. khalifa ;22.1;119.7;10.1;6.1 Ê;42%;122
+;;;;;;;; Ê;;
+FAOP;14/5/2024;3:12;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;14/5/2024;14:00;10.8;Arrival .ruwais;23.6;117.9;10.9;7.3 Ê;52%;135
+;;;;;;;; Ê;;
+FAOP;15/5/2024;11:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;15/5/2024;21:42;10.6;Arrival. khalifa ;24.8;119.3;11.3;8.0Ê;44%;141
+;;;;;;;; Ê;;
+FAOP;16/5/2024;17:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;17/5/2024;5:30;11.9;Arrival .ruwais;22;119.2;10;6.2 Ê;41%;121
+;;;;;;;; Ê;;
+FAOP;18/5/2024;4:12;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;18/5/2024;15:00;10.8;Arrival. khalifa ;26;120.6;11.2;8.8 Ê;65%;142
+;;;;;;;; Ê;;
+FAOP;19/5/2024;15:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;20/5/2024;3:00;11.9;Arrival .ruwais;21.9;119.5;10;6.4 Ê;44%;121
+;;;;;;;; Ê;;
+FAOP;21/5/2024;0:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;21/5/2024;11:54;11.8;Arrival. khalifa ;21.5;119;10.1;6.7 Ê;46%;121
+;;;;;;;; Ê;;
+FAOP;25/5/2024;12:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;25/5/2024;23:00;10.9;Arrival. khalifa ;30.5;101.3;9.3;7.2 Ê;52%;126
+;;;;;;;; Ê;;
+FAOP;27/5/2024;11:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;27/5/2024;21:00;9.9;Arrival .ruwais;22.4;113.7;11.5;7.7 Ê;61%;140
+;;;;;;;; Ê;;
+FAOP;28/5/2024;18:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;29/5/2024;6:00;11.9;Arrival. khalifa ;29.4;108.3;9.1;6.7 Ê;42%;121
+;;;;;;;; Ê;;
+FAOP;30/5/2024;0:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;30/5/2024;11:00;10.9;Arrival .ruwais;24.6;120.1;11;8.3 Ê;64%;138
+;;;;;;;; Ê;;
+FAOP;3/6/2024;23:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;4/6/2024;8:00;8.9;Arrival .ruwais;15.1;115.7;13;7.4 Ê;61%;144
+;;;;;;;; Ê;;
+FAOP;5/6/2024;9:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;5/6/2024;17:00;7.9;Arrival. khalifa ;13.8;109.9;13.9;7.7 Ê;62%;153
+;;;;;;;; Ê;;
+FAOP;6/6/2024;14:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;7/6/2024;0:00;9.9;Arrival .ruwais;9.8;115.2;11.6;52. Ê;30%;121
+;;;;;;;; Ê;;
+FAOP;7/6/2024;19:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;8/6/2024;6:00;10.9;Arrival. khalifa ;17.1;116;10.6;5.9 Ê;32%;121
+;;;;;;;; Ê;;
+FAOP;9/6/2024;4:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;9/6/2024;14:00;9.9;Arrival .ruwais;14.5;119.2;12;6.4 Ê;38%;130
+;;;;;;;; Ê;;
+FAOP;11/6/2024;2:18;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;11/6/2024;12:30;10.2;Arrival. khalifa ;16.1;112.8;11.1;5.7 Ê;34%;121
+;;;;;;;; Ê;;
+FAOP;12/6/2024;8:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;12/6/2024;18:00;9.9;Arrival .ruwais;12.8;121.2;12.2;6.9 Ê;41%;134
+;;;;;;;; Ê;;
+FAOP;14/6/2024;3:42;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;14/6/2024;14:30;10.8;Arrival. khalifa ;15.3;119;11;5.37 Ê;32%;121
+;;;;;;;; Ê;;
+FAOP;15/6/2024;17:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;16/6/2024;5:00;11.9;Arrival .ruwais;21;121.2;10.2;6.3 Ê;30%;122
+;;;;;;;; Ê;;
+FAOP;17/6/2024;4:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;17/6/2024;14:00;9.9;Arrival. khalifa ;19.3;113.8;11.5;7.1 Ê;47%;132
+;;;;;;;; Ê;;
+FAOP;18/6/2024;14:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;19/6/2024;2:00;11.9;Arrival .ruwais;19.7;122.6;10.3;6.5 Ê;31%;121
+;;;;;;;; Ê;;
+FAOP;20/6/2024;2:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;20/6/2024;13:00;10.9;Arrival. khalifa ;20.3;112.8;10.3;6.0Ê;30%;121
+;;;;;;;; Ê;;
+FAOP;21/6/2024;12:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;21/6/2024;19:42;7.6;Arrival .ruwais;12.2;111.8;14.7;8.4 Ê;77%;158
+;;;;;;;; Ê;;
+FAOP;22/6/2024;16:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;23/6/2024;4:00;11.9;Arrival. khalifa ;26.3;112.6;9.5;6.8 Ê;32%;121
+;;;;;;;; Ê;;
+FAOP;24/6/2024;4:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;24/6/2024;13:00;8.9;Arrival .ruwais;18.1;118.6;13.3;8.7 Ê;64%;151
+;;;;;;;; Ê;;
+FAOP;25/6/2024;12:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;25/6/2024;20:48;8.7;Arrival. khalifa ;17.9;115.5;13.3;9. Ê;65%;152
+;;;;;;;; Ê;;
+FAOP;26/6/2024;16:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;27/6/2024;4:00;11.9;Arrival .ruwais;22.3;119.2;10;6.8 Ê;32%;122
+;;;;;;;; Ê;;
+FAOP;28/6/2024;4:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;28/6/2024;14:30;9.9;Arrival. khalifa ;18.9;108.9;11;6.6 Ê;36%;128
+;;;;;;;; Ê;;
+FAOP;29/6/2024;17:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;30/6/2024;4:00;10.4;Arrival .ruwais;17.2;110.6;10.6;5.9 Ê;32%;121
+;;;;;;;; Ê;;
+FAOP;1/7/2024;4:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;1/7/2024;15:30;10.9;Arrival. khalifa ;18.1;114.6;10.5;6.0Ê;32%;121
+;;;;;;;; Ê;;
+FAOP;2/7/2024;13:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;3/7/2024;1:30;11.9;Arrival .ruwais;25.9;113.2;9.5;6.6 Ê;31%;121
+;;;;;;;; Ê;;
+FAOP;4/7/2024;1:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;4/7/2024;10:00;8.4;Arrival. khalifa ;16.6;107.3;12.8;7.5 Ê;56%;144
+;;;;;;;; Ê;;
+FAOP;5/7/2024;9:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;5/7/2024;21:00;11.9;Arrival .ruwais;24.1;117.8;9.9;6.8 Ê;33%;121
+;;;;;;;; Ê;;
+FAOP;6/7/2024;19:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;7/7/2024;7:30;11.9;Arrival. khalifa ;20.5;121.5;10.2;5.9 Ê;32%;121
+;;;;;;;; Ê;;
+FAOP;8/7/2024;6:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;8/7/2024;14:42;8.1;Arrival .ruwais;28;105;13;6.4 Ê;7300%;158
+;;;;;;;; Ê;;
+FAOP;9/7/2024;16:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;10/7/2024;4:00;11.9;Arrival. khalifa ;25.5;114.3;9.6;5.0Ê;32%;122
+;;;;;;;; Ê;;
+FAOP;10/7/2024;22:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;11/7/2024;9:00;10.9;Arrival .ruwais;18.5;118.6;10.9;4.9 Ê;44%;126
+;;;;;;;; Ê;;
+FAOP;25/7/2024;20:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;26/7/2024;8:00;11.9;Arrival .ruwais;20.3;129.5;10.9;5.5 Ê;42%;129
+;;;;;;;; Ê;;
+FAOP;5/8/2024;15:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;6/8/2024;3:00;11.9;Arrival. khalifa ;29.2;113.4;9.5;5.5 Ê;39%;127
+;;;;;;;; Ê;;
+FAOP;7/8/2024;0:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;7/8/2024;10:36;10;Arrival .ruwais;19.5;109.9;11;4.6 Ê;40%;129
+;;;;;;;; Ê;;
+FAOP;12/8/2024;6:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;12/8/2024;16:00;9.9;Arrival. khalifa ;21.6;116.5;11.8;5.6 Ê;44%;131
+;;;;;;;; Ê;;
+FAOP;13/8/2024;20:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;14/8/2024;6:00;9.4;Arrival .ruwais;16.9;107.2;11.4;4.4 Ê;41%;129
+;;;;;;;; Ê;;
+FAOP;15/8/2024;8:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;15/8/2024;15:00;6.9;Arrival. khalifa ;20.2;74.9;10.9;3.4 Ê;40%;129
+;;;;;;;; Ê;;
+FAOP;16/8/2024;22:36;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;17/8/2024;9:48;11.2;Arrival .ruwais;17.2;126.8;11.3;5.3 Ê;42%;129
+;;;;;;;; Ê;;
+FAOP;18/8/2024;19:48;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;19/8/2024;7:42;11.9;Arrival. khalifa ;26.2;118.3;9.9;5.8 Ê;40%;127
+;;;;;;;; Ê;;
+FAOP;20/8/2024;12:00;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;20/8/2024;21:18;9.3;Arrival .ruwais;11.6;111.5;12;4.3 Ê;40%;128
+;;;;;;;; Ê;;
+FAOP;22/8/2024;16:48;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;23/8/2024;4:12;11.4;Arrival. khalifa ;23.8;116.4;10.2;5.1 Ê;40%;126
+;;;;;;;; Ê;;
+FAOP;24/8/2024;1:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;24/8/2024;12:00;10.9;Arrival .ruwais;14.3;126.9;11.6;4.9 Ê;40%;128
+;;;;;;;; Ê;;
+FAOP;26/8/2024;14:54;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;27/8/2024;2:12;11.3;Arrival. khalifa ;21.7;119.5;10.6;5.2 Ê;39%;127
+;;;;;;;; Ê;;
+FAOP;28/8/2024;0:06;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;28/8/2024;11:06;11;Arrival .ruwais;17.5;123.1;11.2;5.0Ê;40%;128
+;;;;;;;; Ê;;
+FAOP;30/8/2024;7:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;30/8/2024;18:12;11.2;Arrival. khalifa ;25.1;112.8;10.1;5.1 Ê;38%;127
+;;;;;;;; Ê;;
+FAOP;31/8/2024;23:18;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;1/9/2024;10:00;10.7;Arrival .ruwais;19;117.8;11;4.9 Ê;40%;128
+;;;;;;;; Ê;;
+FAOP;3/9/2024;10:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;3/9/2024;21:30;11;Arrival. khalifa ;23.5;123.2;11.2;6.6 Ê;58%;142
+;;;;;;;; Ê;;
+FAOP;4/9/2024;16:12;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;5/9/2024;2:12;10;Arrival .ruwais;19.4;123.5;12.4;6.3 Ê;61%;144
+;;;;;;;; Ê;;
+FAOP;7/9/2024;0:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;7/9/2024;10:30;10;Arrival. khalifa ;23.6;117;11.7;6.5 Ê;58%;144
+;;;;;;;; Ê;;
+FAOP;8/9/2024;1:48;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;8/9/2024;12:00;10.2;Arrival .ruwais;15.9;127.7;12.5;6.1 Ê;59%;140
+;;;;;;;; Ê;;
+FAOP;9/9/2024;21:48;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;10/9/2024;7:54;10.1;Arrival. khalifa ;21.7;120.9;12;6.5 Ê;58%;144
+;;;;;;;; Ê;;
+FAOP;11/9/2024;2:12;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;11/9/2024;12:00;9.8;Arrival .ruwais;15.5;128;13.1;6.4 Ê;57%;146
+;;;;;;;; Ê;;
+FAOP;12/9/2024;4:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;12/9/2024;14:42;10.2;Arrival. khalifa ;24.8;117.5;11.5;6.6 Ê;57%;144
+;;;;;;;; Ê;;
+FAOP;13/9/2024;8:30;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;13/9/2024;18:54;10.4;Arrival .ruwais;18.5;128.9;12.4;6.6 Ê;61%;144
+;;;;;;;; Ê;;
+FAOP;14/9/2024;18:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;15/9/2024;5:48;11.3;Arrival. khalifa ;22.7;118.5;10.5;5.4 Ê;45%;128
+;;;;;;;; Ê;;
+FAOP;16/9/2024;3:00;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;16/9/2024;13:12;10.2;Arrival .ruwais;19.8;124.9;12.2;6.6 Ê;58%;144
+;;;;;;;; Ê;;
+FAOP;25/9/2024;15:42;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;26/9/2024;2:54;11.2;Arrival. khalifa ;22.1;118.3;10.6;5.5 Ê;41%;128
+;;;;;;;; Ê;;
+FAOP;26/9/2024;22:00;;Out to Sea (  khalifa  _ ruwais );;;; Ê;;
+EOSP;27/9/2024;10:18;12.3;Arrival .ruwais;22.4;129.6;10.5;6.0;41%;128
+;;;;;;;; Ê;;
+FAOP;28/9/2024;5:12;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;28/9/2024;16:42;11.5;Arrival. khalifa ;24.1;117.5;10.2;5.5 Ê;40%;127
+;;;;;;;; Ê;;
+FAOP;29/9/2024;8:54;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;29/9/2024;20:00;11.1;Arrival .ruwais;17;126.7;11.4;5.6 Ê;40%;128
+;;;;;;;; Ê;;
+FAOP;30/9/2024;16:18;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;1/10/2024;4:36;12.3;Arrival khalifa;26.7;121.7;9.9;6.3 Ê;42%;127
+;;;;;;;; Ê;;
+FAOP;1/10/2024;21:12;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;2/10/2024;8:12;11;Arrival .ruwais;15.6;126.1;11.5;5.7 Ê;41%;128
+;;;;;;;; Ê;;
+FAOP;3/10/2024;7:18;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;3/10/2024;19:12;11.9;Arrival khalifa;22;123.7;10.4;5.8 Ê;40%;127
+;;;;;;;; Ê;;
+FAOP;4/10/2024;15:42;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;5/10/2024;4:24;12.7;Arrival .ruwais;25.5;128.3;10.1;6.7 Ê;43%;128
+;;;;;;;; Ê;;
+FAOP;6/10/2024;0:48;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;6/10/2024;12:48;12;Arrival khalifa;25.6;121.4;10.1;6.0Ê;40%;127
+;;;;;;;; Ê;;
+FAOP;7/10/2024;7:18;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;7/10/2024;18:24;11.1;Arrival .ruwais;15;128.3;11.6;5.7 Ê;40%;128
+;;;;;;;; Ê;;
+FAOP;8/10/2024;16:54;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;9/10/2024;4:30;11.6;Arrival khalifa;23.3;121;10.4;6.0;41%;128
+;;;;;;;; Ê;;
+FAOP;10/10/2024;0:06;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;10/10/2024;10:30;10.4;Arrival .ruwais;14.9;119.5;11.5;5.1 Ê;41%;127
+;;;;;;;; Ê;;
+FAOP;11/10/2024;7:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;11/10/2024;18:12;11.1;Arrival khalifa;25.3;118.7;10.7;7.7 Ê;43%;127
+;;;;;;;; Ê;;
+FAOP;12/10/2024;21:06;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;13/10/2024;7:30;10.4;Arrival .ruwais;17.1;121.3;11.7;6.0;43%;127
+;;;;;;;; Ê;;
+FAOP;14/10/2024;5:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;14/10/2024;16:30;11.4;Arrival khalifa;24;118.5;10.4;6.2 Ê;41%;127
+;;;;;;;; Ê;;
+FAOP;15/10/2024;12:06;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;15/10/2024;22:18;10.2;Arrival .ruwais;14.9;116.9;11.5;5.8 Ê;40%;127
+;;;;;;;; Ê;;
+FAOP;17/10/2024;10:12;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;17/10/2024;21:30;11.3;Arrival khalifa;23.6;115.7;10.2;6.3 Ê;40%;127
+;;;;;;;; Ê;;
+FAOP;19/10/2024;0:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;19/10/2024;12:00;11.5;Arrival .ruwais;16.4;130.1;11.3;5.9 Ê;41%;128
+;;;;;;;; Ê;;
+FAOP;20/10/2024;19:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;21/10/2024;6:36;11.1;Arrival khalifa;24.6;113.3;10.2;6.1 Ê;42%;128
+;;;;;;;; Ê;;
+FAOP;22/10/2024;12:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;23/10/2024;0:00;12;Arrival .ruwais;19.3;130.2;10.9;6.1 Ê;41%;127
+;;;;;;;; Ê;;
+FAOP;24/10/2024;0:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;24/10/2024;13:00;12.5;Arrival khalifa;25.2;119.9;9.6;6.3 Ê;38%;124
+;;;;;;;; Ê;;
+FAOP;25/10/2024;11:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;25/10/2024;22:00;11;Arrival .ruwais;21.4;124.7;11.3;6.8 Ê;44%;137
+;;;;;;;; Ê;;
+FAOP;26/10/2024;22:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;27/10/2024;10:00;12;Arrival .CSP;24.2;122.7;10.2;6.2 Ê;42%;126
+;;;;;;;; Ê;;
+FAOP;28/10/2024;3:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;28/10/2024;15:30;12;Arrival .ruwais;19.3;125.2;10.4;7.3 Ê;41%;130
+;;;;;;;; Ê;;
+FAOP;30/10/2024;11:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;30/10/2024;22:12;11.2;Arrival khalifa;26.3;112.8;10.1;5.9 Ê;46%;127
+;;;;;;;; Ê;;
+FAOP;1/11/2024;17:42;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;2/11/2024;5:30;11.8;Arrival .ruwais;19.9;127.7;10.8;6.2 Ê;45%;127
+;;;;;;;; Ê;;
+FAOP;3/11/2024;5:48;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;3/11/2024;16:54;11.1;Arrival khalifa;23.9;124.2;11.2;7.3 Ê;59%;127
+;;;;;;;; Ê;;
+FAOP;4/11/2024;8:48;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;4/11/2024;20:30;11.7;Arrival .ruwais;18;125.3;10.7;5.5 Ê;38%;123
+;;;;;;;; Ê;;
+FAOP;6/11/2024;14:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;7/11/2024;1:42;11.7;Arrival khalifa;23.5;116.5;10;5.8 Ê;38%;123
+;;;;;;;; Ê;;
+FAOP;7/11/2024;22:06;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;8/11/2024;9:00;10.9;Arrival .ruwais;18.4;122.2;11.2;6.0;42%;129
+;;;;;;;; Ê;;
+FAOP;9/11/2024;4:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;9/11/2024;15:00;11;Arrival khalifa;22;119.5;10.9;6.6 Ê;42%;129
+;;;;;;;; Ê;;
+FAOP;10/11/2024;8:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;10/11/2024;19:30;11.5;Arrival .ruwais;21;128.2;11.1;5.9 Ê;39%;126
+;;;;;;;; Ê;;
+FAOP;11/11/2024;23:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;12/11/2024;12:00;12.4;Arrival khalifa;21.2;130;10.5;6.4 Ê;42%;127
+;;;;;;;; Ê;;
+FAOP;13/11/2024;8:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;13/11/2024;19:54;11.4;Arrival .ruwais;18.2;126.5;11.1;6.1 Ê;41%;127
+;;;;;;;; Ê;;
+FAOP;17/11/2024;17:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;18/11/2024;4:48;11.3;Arrival khalifa;26.1;113.2;10;6.1 Ê;42%;127
+;;;;;;;; Ê;;
+FAOP;19/11/2024;0:06;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;19/11/2024;11:00;10.9;Arrival .ruwais;14.1;127.1;11.7;6.0Ê;42%;127
+;;;;;;;; Ê;;
+FAOP;20/11/2024;7:36;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;20/11/2024;17:06;9.5;Arrival khalifa;20.7;116.2;12.2;7.9 Ê;63%;127
+;;;;;;;; Ê;;
+FAOP;21/11/2024;10:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;21/11/2024;22:00;11.5;Arrival .ruwais;19.2;125.3;10.9;6.0Ê;42%;127
+;;;;;;;; Ê;;
+FAOP;22/11/2024;21:42;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;23/11/2024;10:00;12.3;Arrival khalifa;26.7;114.6;9.3;6.1 Ê;40%;125
+;;;;;;;; Ê;;
+FAOP;24/11/2024;8:18;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;24/11/2024;20:48;12.5;Arrival .ruwais;22;126.6;10.1;6.3 Ê;41%;125
+;;;;;;;; Ê;;
+FAOP;25/11/2024;20:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;26/11/2024;8:30;12.4;Arrival khalifa;25.9;117.7;9.5;6.2 Ê;41%;125
+;;;;;;;; Ê;;
+FAOP;27/11/2024;3:06;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;27/11/2024;14:06;11;Arrival .ruwais;22.4;127.4;11.6;6.5 Ê;45%;129
+;;;;;;;; Ê;;
+FAOP;28/11/2024;12:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;29/11/2024;0:00;12;Arrival khalifa;26.2;116.6;9.7;6.3 Ê;40%;125
+;;;;;;;; Ê;;
+FAOP;29/11/2024;21:12;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;30/11/2024;8:00;10.8;Arrival .ruwais;24;124.8;11.6;7.7 Ê;64%;127
+;;;;;;;; Ê;;
+FAOP;1/12/2024;10:54;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;1/12/2024;23:00;12.1;Arrival khalifa;26;118.7;9.8;6.3 Ê;45%;125
+;;;;;;;; Ê;;
+FAOP;2/12/2024;15:54;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;3/12/2024;4:12;12.3;Arrival .ruwais;17.4;117.6;9.6;6.1 Ê;43%;125
+;;;;;;;; Ê;;
+FAOP;4/12/2024;1:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;4/12/2024;13:30;12;Arrival khalifa;26.6;118;9.8;6.2 Ê;42%;125
+;;;;;;;; Ê;;
+FAOP;5/12/2024;8:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;5/12/2024;19:48;11.3;Arrival .ruwais;19;121.5;10.8;5.7 Ê;41%;125
+;;;;;;;; Ê;;
+FAOP;6/12/2024;18:18;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;7/12/2024;5:24;11.1;Arrival khalifa;20.9;119.8;10.8;6.2 Ê;43%;128
+;;;;;;;; Ê;;
+FAOP;7/12/2024;20:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;8/12/2024;8:00;11.5;Arrival .ruwais;20.4;125.1;10.9;6.5 Ê;48%;129
+;;;;;;;; Ê;;
+FAOP;9/12/2024;7:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;9/12/2024;18:00;11;Arrival khalifa;24.5;119.4;10.9;8.3 Ê;60%;127
+;;;;;;;; Ê;;
+FAOP;10/12/2024;14:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;11/12/2024;2:18;11.8;Arrival .ruwais;22;121.3;10.3;6.1 Ê;41%;125
+;;;;;;;; Ê;;
+FAOP;12/12/2024;9:12;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;12/12/2024;19:00;9.8;Arrival khalifa;22;116.7;11.9;7.2 Ê;62%;143
+;;;;;;;; Ê;;
+FAOP;13/12/2024;18:48;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;14/12/2024;5:30;10.7;Arrival .ruwais;16.5;120.7;11.3;6.1 Ê;45%;127
+;;;;;;;; Ê;;
+FAOP;14/12/2024;23:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;15/12/2024;12:00;12.5;Arrival khalifa;28.3;120.3;9.6;6.5 Ê;43%;126
+;;;;;;;; Ê;;
+FAOP;16/12/2024;15:36;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;17/12/2024;3:48;12.2;Arrival .ruwais;25.8;120.5;9.9;6.4 Ê;43%;125
+;;;;;;;; Ê;;
+FAOP;21/12/2024;0:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;21/12/2024;12:00;11.5;Arrival khalifa;27.9;108.8;9.5;5.8 Ê;40%;127
+;;;;;;;; Ê;;
+FAOP;22/12/2024;5:42;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;22/12/2024;18:12;12.5;Arrival .ruwais;25;126.5;10.1;7.4 Ê;53%;127
+;;;;;;;; Ê;;
+FAOP;23/12/2024;12:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;23/12/2024;21:48;9.8;Arrival khalifa;22.5;105.7;10.8;5.8 Ê;53%;127
+;;;;;;;; Ê;;
+FAOP;24/12/2024;15:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;25/12/2024;2:00;11;Arrival .ruwais;20.1;115.5;10.5;5.6 Ê;42%;124
+;;;;;;;; Ê;;
+FAOP;26/12/2024;2:06;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;26/12/2024;14:06;12;Arrival khalifa;27.3;121;10.1;6.5 Ê;44%;127
+;;;;;;;; Ê;;
+FAOP;27/12/2024;7:24;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;27/12/2024;18:48;11.4;Arrival .ruwais;18;127.5;11.2;6.2 Ê;42%;126
+;;;;;;;; Ê;;
+FAOP;29/12/2024;0:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;29/12/2024;12:00;11.5;Arrival khalifa;27.8;113.3;9.9;6.5 Ê;42%;127
+;;;;;;;; Ê;;
+FAOP;30/12/2024;6:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;30/12/2024;18:30;12;Arrival .ruwais;18;128.4;10.7;6.0Ê;41%;127
+;;;;;;;; Ê;;
+FAOP;3/1/2025;13:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;4/1/2025;1:24;11.9;Arrival khalifa;25.1;117.5;9.9;6.1 Ê;40%;127
+;;;;;;;; Ê;;
+FAOP;6/1/2025;8:54;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;6/1/2025;20:30;11.6;Arrival .ruwais;19;124.7;10.8;6.4 Ê;44%;128
+;;;;;;;; Ê;;
+FAOP;10/1/2025;20:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;11/1/2025;8:54;12.9;Arrival khalifa;28;114.7;8.9;6.0Ê;36%;127
+;;;;;;;; Ê;;
+FAOP;12/1/2025;7:18;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;12/1/2025;19:18;12;Arrival .ruwais;19;126.9;10.6;6.1 Ê;41%;127
+;;;;;;;; Ê;;
+FAOP;13/1/2025;15:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;14/1/2025;3:00;12;Arrival khalifa;25.2;116.3;9.7;5.6 Ê;34%;117
+;;;;;;;; Ê;;
+FAOP;14/1/2025;16:12;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;15/1/2025;5:12;13;Arrival .ruwais;23.6;125.5;9.7;6.2 Ê;40%;119
+;;;;;;;; Ê;;
+FAOP;18/1/2025;23:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;19/1/2025;11:00;12;Arrival khalifa;26.5;116.7;9.7;6.5 Ê;39%;125
+;;;;;;;; Ê;;
+FAOP;20/1/2025;14:06;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;21/1/2025;2:48;12.7;Arrival .ruwais;23.4;118.1;9.3;5.7 Ê;40%;117
+;;;;;;;; Ê;;
+FAOP;22/1/2025;1:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;22/1/2025;13:00;11.5;Arrival khalifa;30.7;112.8;9.8;8.0Ê;52%;127
+;;;;;;;; Ê;;
+FAOP;23/1/2025;12:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;23/1/2025;22:12;10.2;Arrival .ruwais;16.4;121.6;11.9;6.9 Ê;50%;134
+;;;;;;;; Ê;;
+FAOP;25/1/2025;6:48;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;25/1/2025;16:24;9.6;Arrival khalifa;21;116.2;12.1;7.8 Ê;57%;127
+;;;;;;;; Ê;;
+FAOP;26/1/2025;12:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;26/1/2025;23:30;11.5;Arrival .ruwais;19.7;115;10;5.2 Ê;36%;117
+;;;;;;;; Ê;;
+FAOP;28/1/2025;0:24;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;28/1/2025;13:18;12.9;Arrival khalifa;23;115.3;8.9;6.4 Ê;42%;127
+;;;;;;;; Ê;;
+FAOP;29/1/2025;8:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;29/1/2025;20:12;11.7;Arrival .ruwais;23.8;122.9;10.5;6.7 Ê;44%;127
+;;;;;;;; Ê;;
+FAOP;31/1/2025;1:54;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;31/1/2025;14:24;12.5;Arrival khalifa;28.4;115.5;9.2;7.3 Ê;43%;127
+;;;;;;;; Ê;;
+FAOP;1/2/2025;6:42;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;1/2/2025;18:30;11.8;Arrival .ruwais;22;123.6;10.5;6.6 Ê;45%;127
+;;;;;;;; Ê;;
+FAOP;3/2/2025;3:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;3/2/2025;16:00;12.5;Arrival khalifa;27;116.3;9.3;5.8 Ê;42%;121
+;;;;;;;; Ê;;
+FAOP;4/2/2025;10:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;4/2/2025;20:30;10.5;Arrival .ruwais;21.6;124.8;11.9;7.8 Ê;59%;142
+;;;;;;;; Ê;;
+FAOP;5/2/2025;20:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;6/2/2025;8:24;11.9;Arrival khalifa;30.9;106.7;9;5.7 Ê;44%;122
+;;;;;;;; Ê;;
+FAOP;7/2/2025;5:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;7/2/2025;17:54;12.4;Arrival .ruwais;19.1;125.2;10.1;5.5 Ê;39%;117
+;;;;;;;; Ê;;
+FAOP;8/2/2025;23:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;9/2/2025;11:30;12.5;Arrival khalifa;31.7;106;8.5;5.3 Ê;36%;117
+;;;;;;;; Ê;;
+FAOP;10/2/2025;10:12;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;10/2/2025;23:24;13.2;Arrival .ruwais;23.7;124.7;9.4;5.8 Ê;38%;117
+;;;;;;;; Ê;;
+FAOP;12/2/2025;5:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;12/2/2025;18:24;12.9;Arrival khalifa;30.2;115.3;8.9;5.9 Ê;40%;121
+;;;;;;;; Ê;;
+FAOP;13/2/2025;23:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;14/2/2025;11:42;12.2;Arrival .ruwais;18.6;124.9;10.2;5.6 Ê;38%;119
+;;;;;;;; Ê;;
+FAOP;15/2/2025;21:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;16/2/2025;10:30;13.5;Arrival khalifa;30.9;118.5;8.8;5.8 Ê;39%;120
+;;;;;;;; Ê;;
+FAOP;17/2/2025;20:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;18/2/2025;9:00;12.5;Arrival .ruwais;17.5;129.9;10.4;5.4 Ê;38%;119
+;;;;;;;; Ê;;
+FAOP;19/2/2025;21:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;20/2/2025;10:30;13.5;Arrival khalifa;29.7;119.4;8.8;5.6 Ê;39%;119
+;;;;;;;; Ê;;
+FAOP;21/2/2025;23:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;22/2/2025;12:00;13;Arrival .ruwais;20.3;125.6;9.7;5.1 Ê;36%;114
+;;;;;;;; Ê;;
+FAOP;23/2/2025;11:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;24/2/2025;0:12;12.7;Arrival khalifa;25.8;121.7;9.6;5.8 Ê;42%;122
+;;;;;;;; Ê;;
+FAOP;24/2/2025;19:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;25/2/2025;9:00;14;Arrival .ruwais;29.1;125;8.9;6.1 Ê;41%;119
+;;;;;;;; Ê;;
+FAOP;27/2/2025;18:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;28/2/2025;8:30;14;Arrival khalifa;27.8;126.9;9.1;5.9 Ê;40%;118
+;;;;;;;; Ê;;
+FAOP;1/3/2025;2:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;1/3/2025;16:00;13.5;Arrival .ruwais;24.4;126;9.3;5.9 Ê;38%;116
+;;;;;;;; Ê;;
+FAOP;2/3/2025;14:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;3/3/2025;4:00;14;Arrival khalifa;30.8;121.5;8.7;6.3 Ê;39%;118
+;;;;;;;; Ê;;
+FAOP;4/3/2025;4:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;4/3/2025;16:30;12.5;Arrival .ruwais;21.3;122.9;9.8;5.4 Ê;40%;118
+;;;;;;;; Ê;;
+FAOP;6/3/2025;17:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;7/3/2025;9:00;15.5;Arrival khalifa;34.2;125.6;8.1;6.3 Ê;36%;116
+;;;;;;;; Ê;;
+FAOP;8/3/2025;6:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;8/3/2025;19:30;13.5;Arrival .ruwais;22.6;125.8;9.3;5.0;35%;115
+;;;;;;;; Ê;;
+FAOP;9/3/2025;18:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;10/3/2025;8:00;13.5;Arrival khalifa;30.2;116.1;8.6;5.5 Ê;36%;116
+;;;;;;;; Ê;;
+FAOP;11/3/2025;0:06;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;11/3/2025;12:00;11.9;Arrival .ruwais;17.8;120.3;10.1;5.0Ê;36%;116
+;;;;;;;; Ê;;
+FAOP;12/3/2025;12:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;13/3/2025;2:00;13.5;Arrival khalifa;26.3;122;9;5.8 Ê;37%;116
+;;;;;;;; Ê;;
+FAOP;13/3/2025;17:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;14/3/2025;7:00;13.5;Arrival .ruwais;25.4;124.2;9.2;6.0;38%;116
+;;;;;;;; Ê;;
+FAOP;15/3/2025;3:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;15/3/2025;16:30;13;Arrival khalifa;29.5;120.1;9.2;6.6 Ê;43%;124
+;;;;;;;; Ê;;
+FAOP;18/3/2025;5:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;18/3/2025;18:30;13.5;Arrival .ruwais;21.7;133.8;9.9;6.5 Ê;40%;119
+;;;;;;;; Ê;;
+FAOP;19/3/2025;18:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;20/3/2025;9:00;14.5;Arrival khalifa;31.5;122.2;8.4;6.2 Ê;36%;116
+;;;;;;;; Ê;;
+FAOP;21/3/2025;12:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;22/3/2025;0:30;12.5;Arrival .ruwais;19.1;124.7;10;5.5 Ê;38%;116
+;;;;;;;; Ê;;
+FAOP;22/3/2025;22:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;23/3/2025;12:00;14;Arrival khalifa;32.2;116.8;8.3;6.0;38%;116
+;;;;;;;; Ê;;
+FAOP;24/3/2025;23:00;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;25/3/2025;17:00;18;Arrival .ruwais;40.2;130.5;7.3;7.9 Ê;45%;116
+;;;;;;;; Ê;;
+FAOP;26/3/2025;20:00;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;27/3/2025;10:00;14;Arrival khalifa;30.6;120;8.6;6.1 Ê;38%;117
+;;;;;;;; Ê;;
+FAOP;28/3/2025;3:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;28/3/2025;17:00;13.5;Arrival .ruwais;22;126.6;9.4;5.8 Ê;36%;115
+;;;;;;;; Ê;;
+FAOP;29/3/2025;19:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;30/3/2025;10:00;14.5;Arrival khalifa;31;123.4;8.5;6.4 Ê;38%;116
+;;;;;;;; Ê;;
+FAOP;31/3/2025;0:30;;Out to Sea (khalifa_ ruwais );;;; Ê;;
+EOSP;31/3/2025;13:30;13;Arrival .ruwais;20.7;128.5;9.9;5.8 Ê;38%;122
+;;;;;;;; Ê;;
+FAOP;1/4/2025;9:30;;Out to Sea ( ruwais _ khalifa  );;;; Ê;;
+EOSP;1/4/2025;22:30;13;Arrival khalifa;25.9;118.3;9.1;5.8Ê;37%;116
+;;;;;;;;;;
+FAOP;3/4/2025;20:30;;Out to Sea (khalifa_ ruwais );;;;;;
+EOSP;4/4/2025;10:00;13.5;Arrival .ruwais;22.5;129;9.6;5.9;38%;116
+;;;;;;;;;;
+FAOP;5/4/2025;8:00;;Out to Sea ( ruwais _ khalifa  );;;;;;
+EOSP;5/4/2025;21:00;13;Arrival khalifa;25.6;120;9.2;5.8;40%;117
+;;;;;;;;;;
+FAOP;6/4/2025;10:30;;Out to Sea (khalifa_ ruwais );;;;;;
+EOSP;6/4/2025;23:30;13;Arrival .ruwais;20.8;127;9.8;5.7;39%;116
+;;;;;;;;;;
+FAOP;7/4/2025;23:00;;Out to Sea ( ruwais _ khalifa  );;;;;;
+EOSP;8/4/2025;14:00;15;Arrival khalifa;30.2;128.9;8.6;6.3;39%;117
+;;;;;;;;;;
+FAOP;9/4/2025;5:00;;Out to Sea (khalifa_ ruwais );;;;;;
+EOSP;9/4/2025;19:00;14;Arrival .ruwais;26.2;127;9.1;6.3;38%;116
+;;;;;;;;;;
+FAOP;11/4/2025;2:30;;Out to Sea ( ruwais _ khalifa  );;;;;;
+EOSP;11/4/2025;17:00;14.5;Arrival khalifa;28;123;8.5;5.7;31%;113
+;;;;;;;;;;
+FAOP;12/4/2025;10:00;;Out to Sea (khalifa_ ruwais );;;;;;
+EOSP;12/4/2025;22:30;12.5;Arrival .ruwais;17.7;126.8;10.1;5.5;38%;116
+;;;;;;;;;;
+FAOP;13/4/2025;14:00;;Out to Sea ( ruwais _ khalifa  );;;;;;
+EOSP;14/4/2025;3:30;13.5;Arrival khalifa;30.7;115.2;8.5;6;38%;116
+;;;;;;;;;;
+FAOP;14/4/2025;20:00;;Out to Sea (khalifa_ ruwais );;;;;;
+EOSP;15/4/2025;9:00;13;Arrival .ruwais;21.3;126;9.7;5.8 ;38%;116

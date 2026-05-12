@@ -1,0 +1,1 @@
+{"min_val": 5.0, "max_val": 9.0, "feature_cols": ["Trip_Hours", "Distance_NM", "Speed_KN", "Load_Pct", "RPM"], "target_col": "FOC_cleaned", "metrics": {"train_mse": 9.508991857655433, "test_mse": 1.3136229292751802, "train_rmse": 3.083665328412834, "test_rmse": 1.1461339054731694, "train_r2": 0.16047709334393678, "test_r2": -0.1398029755099175}}
