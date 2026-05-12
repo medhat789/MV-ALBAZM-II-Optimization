@@ -28,6 +28,7 @@ DUBAI_TZ = timezone(timedelta(hours=4))
 from ship_ml import AlbazmMLSystem, MAX_SPEED_KNOTS, OPTIMAL_RPM_MIN, OPTIMAL_RPM_MAX  # noqa: E402
 from route_manager import RouteManager  # noqa: E402
 from live_weather import fetch_route_weather  # noqa: E402
+from variable_speed import segment_distances, allocate_variable_speeds  # noqa: E402
 
 logging.basicConfig(
     level=logging.INFO,
@@ -205,16 +206,23 @@ async def optimize_route(req: OptimizationRequest):
 
     now = datetime.now(DUBAI_TZ)
     hours_available = (required_arrival - now).total_seconds() / 3600.0
-    total_distance = float(route.get("total_distance_nm") or 130.0)
+
+    # --- segment-level haversine distances & variable-speed allocation -----
+    raw_waypoints = route.get("waypoints", []) or []
+    seg_dists = segment_distances(raw_waypoints)
+    total_distance = sum(seg_dists) or float(route.get("total_distance_nm") or 130.0)
     min_hours_required = total_distance / MAX_SPEED_KNOTS  # hours at max speed
     eta_feasible = hours_available >= min_hours_required and hours_available > 0
 
-    if hours_available <= 0:
-        hours_available = 12.0  # safe fallback, still flagged infeasible above
+    # Always pass a positive time budget to the allocator (it handles critical case)
+    time_budget = hours_available if hours_available > 0 else min_hours_required
+    seg_speeds, speed_stats = allocate_variable_speeds(seg_dists, time_budget,
+                                                       max_speed=MAX_SPEED_KNOTS, min_speed=6.0)
 
     required_speed = total_distance / hours_available if hours_available > 0 else float("inf")
-    optimal_speed = max(6.0, min(MAX_SPEED_KNOTS, required_speed))
-    actual_duration = total_distance / optimal_speed
+    actual_duration = speed_stats.get("total_time_hours", min_hours_required)
+    # Use average speed (time-weighted) for the ML prediction
+    optimal_speed = total_distance / actual_duration if actual_duration > 0 else MAX_SPEED_KNOTS
 
     prediction = ml_system.predict_fuel(
         speed=optimal_speed,
@@ -225,31 +233,51 @@ async def optimize_route(req: OptimizationRequest):
     )
     fuel_consumption = float(prediction.get("predicted_fuel_mt", 0) or 0)
 
-    # Format waypoints for the React UI
+    # Format waypoints — each with its OWN segment distance + suggested speed
     formatted_waypoints: List[Dict] = []
-    for wp in route.get("waypoints", []):
+    for i, wp in enumerate(raw_waypoints):
+        is_last = i == len(raw_waypoints) - 1
+        seg_d = seg_dists[i] if i < len(seg_dists) else 0.0
+        seg_s = seg_speeds[i] if i < len(seg_speeds) else optimal_speed
         formatted_waypoints.append({
             "name": wp.get("name", "Waypoint"),
             "lat": wp.get("latitude", 0),
             "lon": wp.get("longitude", 0),
-            "course_to_next": wp.get("course_to_next", 0),
-            "suggested_speed_kn": round(optimal_speed, 1),
-            "distance_to_next_nm": wp.get("distance_to_next_nm", 0),
+            "course_to_next": wp.get("course_to_next", 0) if not is_last else 0,
+            "suggested_speed_kn": round(seg_s, 1),
+            "distance_to_next_nm": round(seg_d, 2),
         })
 
-    # Alternative routes (eco/fast)
+    # Alternative routes (eco / fast) — re-allocate speeds for the same route
     alternatives: List[Dict] = []
-    for i, (name, speed_factor) in enumerate([("Eco-Efficient Route", 0.9), ("Fast Route", 1.1)]):
-        alt_speed = max(6.0, min(MAX_SPEED_KNOTS, optimal_speed * speed_factor))
-        alt_duration = total_distance / alt_speed
+    alt_configs = [
+        ("Eco-Efficient Route", min(time_budget * 1.15, time_budget + 4.0), "fuel"),
+        ("Fast Route", max(time_budget * 0.92, min_hours_required), "time"),
+    ]
+    for i, (name, alt_time, route_type) in enumerate(alt_configs):
+        alt_speeds, alt_stats = allocate_variable_speeds(seg_dists, alt_time,
+                                                         max_speed=MAX_SPEED_KNOTS, min_speed=6.0)
+        alt_avg = total_distance / alt_stats["total_time_hours"] if alt_stats["total_time_hours"] > 0 else optimal_speed
+        alt_duration = alt_stats["total_time_hours"]
         alt_pred = ml_system.predict_fuel(
-            speed=alt_speed,
+            speed=alt_avg,
             duration=alt_duration,
             distance=total_distance,
             wind_speed=req.wind_speed or 5.0,
             route=route_key,
         )
         alt_fuel = float(alt_pred.get("predicted_fuel_mt", 0) or 0)
+        # Build alt waypoints with their own speeds
+        alt_waypoints = []
+        for j, wp in enumerate(raw_waypoints):
+            alt_waypoints.append({
+                "name": wp.get("name", "Waypoint"),
+                "lat": wp.get("latitude", 0),
+                "lon": wp.get("longitude", 0),
+                "course_to_next": wp.get("course_to_next", 0) if j < len(raw_waypoints) - 1 else 0,
+                "suggested_speed_kn": round(alt_speeds[j] if j < len(alt_speeds) else alt_avg, 1),
+                "distance_to_next_nm": round(seg_dists[j] if j < len(seg_dists) else 0, 2),
+            })
         alternatives.append({
             "route_id": f"alt_{i}",
             "route_name": name,
@@ -258,11 +286,22 @@ async def optimize_route(req: OptimizationRequest):
             "total_fuel_mt": round(alt_fuel, 3),
             "total_cost_usd": round(alt_fuel * 650, 2),
             "optimization_score": round(total_distance / alt_fuel if alt_fuel > 0 else 0, 3),
-            "route_type": "fuel" if i == 0 else "time",
-            "waypoints": formatted_waypoints,
+            "route_type": route_type,
+            "waypoints": alt_waypoints,
         })
 
-    feasibility_msg = "Feasible" if eta_feasible else "ETA Infeasible — requires faster than max speed"
+    if speed_stats.get("mode") == "constant-max":
+        feasibility_msg = "ETA critical — running at constant max speed (12.0 kn)"
+        speed_rec = "Constant max speed 12.0 kn (ETA at the edge of feasibility)"
+    elif speed_stats.get("mode") == "variable":
+        feasibility_msg = "Feasible — variable speed profile applied for fuel savings"
+        speed_rec = (f"Variable speed {speed_stats.get('min_speed_kn')}–"
+                     f"{speed_stats.get('max_speed_kn')} kn (avg {round(optimal_speed,1)} kn). "
+                     f"Longer segments slowed; shorter ones sped up.")
+    else:
+        feasibility_msg = "Feasible" if eta_feasible else "ETA Infeasible — requires faster than max speed"
+        speed_rec = f"{round(optimal_speed, 1)} knots constant"
+
     result = {
         "success": True,
         "eta_feasibility": {
@@ -272,6 +311,7 @@ async def optimize_route(req: OptimizationRequest):
             "min_hours_needed": round(min_hours_required, 2),
             "suggested_eta_iso": (now + timedelta(hours=min_hours_required)).isoformat(),
         },
+        "speed_profile": speed_stats,
         "recommended_route": {
             "route_id": route_key,
             "route_name": route.get("name", route_key).replace("_", " "),
@@ -287,7 +327,7 @@ async def optimize_route(req: OptimizationRequest):
         "weather_conditions": weather_data,
         "optimization_insights": {
             "fuel_efficiency": f"Predicted {round(fuel_consumption, 2)} MT for {round(actual_duration, 1)} h voyage",
-            "speed_recommendation": f"{round(optimal_speed, 1)} knots optimized for the requested ETA",
+            "speed_recommendation": speed_rec,
             "eta_feasibility": feasibility_msg,
             "weather_impact": f"Live wind {weather_data.get('average', {}).get('wind_speed', '?')} m/s @ "
                               f"{weather_data.get('average', {}).get('wind_direction', '?')}° factored in",

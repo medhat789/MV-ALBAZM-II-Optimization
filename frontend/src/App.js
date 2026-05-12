@@ -317,6 +317,29 @@ const EnhancedShipOptimizer = () => {
               </div>
             )}
 
+            {/* Speed profile banner */}
+            {results.speed_profile && (
+              <div data-testid="speed-profile" className={`p-4 rounded-sm border ${
+                results.speed_profile.mode === 'constant-max'
+                  ? 'bg-amber-500/10 border-amber-500/30'
+                  : 'bg-cyan-400/5 border-cyan-400/30'
+              }`}>
+                <div className="flex items-center gap-2 mb-1">
+                  <Activity className={`w-4 h-4 ${results.speed_profile.mode === 'constant-max' ? 'text-amber-400' : 'text-cyan-400'}`} />
+                  <h4 className="font-mono text-xs uppercase tracking-wider text-slate-300">
+                    Speed Profile: {results.speed_profile.mode === 'variable' ? 'VARIABLE' : results.speed_profile.mode === 'constant-max' ? 'CONSTANT MAX (CRITICAL)' : 'UNIFORM'}
+                  </h4>
+                </div>
+                <p className="text-sm text-slate-300 font-mono">
+                  {results.speed_profile.mode === 'variable'
+                    ? `Variable ${results.speed_profile.min_speed_kn?.toFixed(1)}–${results.speed_profile.max_speed_kn?.toFixed(1)} kn · avg ${(results.recommended_route.total_distance_nm / results.recommended_route.estimated_duration_hours).toFixed(1)} kn · longer segments slowed to save fuel`
+                    : results.speed_profile.mode === 'constant-max'
+                    ? `Running at 12.0 kn throughout — ETA is at the edge of feasibility (need avg ${results.speed_profile.required_avg_kn} kn)`
+                    : `Uniform speed across ${results.speed_profile.total_distance_nm} NM`}
+                </p>
+              </div>
+            )}
+
             {/* Metrics Row */}
             <div data-testid="results-metrics" className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <MetricCard icon={MapPin} title="Total Distance" value={results.recommended_route.total_distance_nm} unit="NM" testId="metric-distance" />
@@ -517,15 +540,21 @@ const RouteTable = ({ waypoints }) => (
         </tr>
       </thead>
       <tbody>
-        {waypoints.map((wp, i) => (
-          <tr key={i} className="border-b border-navy-700 hover:bg-navy-800/50 transition-colors">
-            <td className="px-4 py-3 text-sm text-white font-medium">{wp.name}</td>
-            <td className="px-4 py-3 font-mono text-xs text-slate-400">{Number(wp.lat).toFixed(4)}, {Number(wp.lon).toFixed(4)}</td>
-            <td className="px-4 py-3 font-mono text-sm text-slate-300">{wp.course_to_next || "—"}</td>
-            <td className="px-4 py-3 font-mono text-sm text-slate-300">{wp.distance_to_next_nm ? Number(wp.distance_to_next_nm).toFixed(1) : "—"}</td>
-            <td className="px-4 py-3 font-mono text-sm text-cyan-400">{wp.suggested_speed_kn}</td>
-          </tr>
-        ))}
+        {waypoints.map((wp, i) => {
+          const spd = Number(wp.suggested_speed_kn) || 0;
+          // Color hot/cold relative to max speed 12 kn
+          const ratio = Math.max(0, Math.min(1, (spd - 6) / 6));
+          const speedColor = ratio > 0.85 ? "text-signal-orange" : ratio > 0.55 ? "text-cyan-400" : "text-emerald-400";
+          return (
+            <tr key={i} className="border-b border-navy-700 hover:bg-navy-800/50 transition-colors">
+              <td className="px-4 py-3 text-sm text-white font-medium">{wp.name}</td>
+              <td className="px-4 py-3 font-mono text-xs text-slate-400">{Number(wp.lat).toFixed(4)}, {Number(wp.lon).toFixed(4)}</td>
+              <td className="px-4 py-3 font-mono text-sm text-slate-300">{wp.course_to_next ? Number(wp.course_to_next).toFixed(1) + "°" : "—"}</td>
+              <td className="px-4 py-3 font-mono text-sm text-slate-300">{wp.distance_to_next_nm ? Number(wp.distance_to_next_nm).toFixed(2) : "—"}</td>
+              <td className={`px-4 py-3 font-mono text-sm font-medium ${speedColor}`}>{spd.toFixed(1)}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   </div>
