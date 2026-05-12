@@ -580,29 +580,28 @@ const RouteMap = ({ waypoints }) => {
 
 const RouteTable = ({ waypoints }) => (
   <div className="border border-navy-700 rounded-sm overflow-x-auto">
-    <table data-testid="waypoint-table" className="min-w-full">
+    <table data-testid="waypoint-table" className="min-w-full text-sm">
       <thead>
         <tr className="bg-navy-900">
-          <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Waypoint</th>
-          <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Lat / Lon</th>
-          <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Course</th>
-          <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Distance (NM)</th>
-          <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Speed (kn)</th>
+          <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">Waypoint</th>
+          <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">Lat / Lon</th>
+          <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">Course</th>
+          <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">Distance (NM)</th>
+          <th className="px-3 md:px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400 whitespace-nowrap">Speed (kn)</th>
         </tr>
       </thead>
       <tbody>
         {waypoints.map((wp, i) => {
           const spd = Number(wp.suggested_speed_kn) || 0;
-          // Color hot/cold relative to max speed 12 kn
           const ratio = Math.max(0, Math.min(1, (spd - 6) / 6));
           const speedColor = ratio > 0.85 ? "text-signal-orange" : ratio > 0.55 ? "text-cyan-400" : "text-emerald-400";
           return (
             <tr key={i} className="border-b border-navy-700 hover:bg-navy-800/50 transition-colors">
-              <td className="px-4 py-3 text-sm text-white font-medium">{wp.name}</td>
-              <td className="px-4 py-3 font-mono text-xs text-slate-400">{Number(wp.lat).toFixed(4)}, {Number(wp.lon).toFixed(4)}</td>
-              <td className="px-4 py-3 font-mono text-sm text-slate-300">{wp.course_to_next ? Number(wp.course_to_next).toFixed(1) + "°" : "—"}</td>
-              <td className="px-4 py-3 font-mono text-sm text-slate-300">{wp.distance_to_next_nm ? Number(wp.distance_to_next_nm).toFixed(2) : "—"}</td>
-              <td className={`px-4 py-3 font-mono text-sm font-medium ${speedColor}`}>{spd.toFixed(1)}</td>
+              <td className="px-3 md:px-4 py-3 text-sm text-white font-medium whitespace-nowrap">{wp.name}</td>
+              <td className="px-3 md:px-4 py-3 font-mono text-xs text-slate-400 whitespace-nowrap">{Number(wp.lat).toFixed(4)}, {Number(wp.lon).toFixed(4)}</td>
+              <td className="px-3 md:px-4 py-3 font-mono text-sm text-slate-300 whitespace-nowrap">{wp.course_to_next ? Number(wp.course_to_next).toFixed(1) + "°" : "—"}</td>
+              <td className="px-3 md:px-4 py-3 font-mono text-sm text-slate-300 whitespace-nowrap">{wp.distance_to_next_nm ? Number(wp.distance_to_next_nm).toFixed(2) : "—"}</td>
+              <td className={`px-3 md:px-4 py-3 font-mono text-sm font-medium whitespace-nowrap ${speedColor}`}>{spd.toFixed(1)}</td>
             </tr>
           );
         })}
