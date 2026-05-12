@@ -248,26 +248,24 @@ async def optimize_route(req: OptimizationRequest):
             "distance_to_next_nm": round(seg_d, 2),
         })
 
-    # Alternative routes (eco / fast) — re-allocate speeds for the same route
+    # Alternative routes — constant-speed bookends:
+    #   Eco-Efficient = constant MIN speed (6.0 kn) → lowest fuel, longest time
+    #   Fast Route    = constant MAX speed (12.0 kn) → fastest time, highest fuel
     alternatives: List[Dict] = []
     alt_configs = [
-        ("Eco-Efficient Route", min(time_budget * 1.15, time_budget + 4.0), "fuel"),
-        ("Fast Route", max(time_budget * 0.92, min_hours_required), "time"),
+        ("Eco-Efficient Route", 6.0,  "fuel"),
+        ("Fast Route",          MAX_SPEED_KNOTS, "time"),
     ]
-    for i, (name, alt_time, route_type) in enumerate(alt_configs):
-        alt_speeds, alt_stats = allocate_variable_speeds(seg_dists, alt_time,
-                                                         max_speed=MAX_SPEED_KNOTS, min_speed=6.0)
-        alt_avg = total_distance / alt_stats["total_time_hours"] if alt_stats["total_time_hours"] > 0 else optimal_speed
-        alt_duration = alt_stats["total_time_hours"]
+    for i, (name, fixed_speed, route_type) in enumerate(alt_configs):
+        alt_duration = total_distance / fixed_speed if fixed_speed > 0 else min_hours_required
         alt_pred = ml_system.predict_fuel(
-            speed=alt_avg,
+            speed=fixed_speed,
             duration=alt_duration,
             distance=total_distance,
-            wind_speed=req.wind_speed or 5.0,
+            wind_speed=req.wind_speed or weather_data.get("average", {}).get("wind_speed", 5.0),
             route=route_key,
         )
         alt_fuel = float(alt_pred.get("predicted_fuel_mt", 0) or 0)
-        # Build alt waypoints with their own speeds
         alt_waypoints = []
         for j, wp in enumerate(raw_waypoints):
             alt_waypoints.append({
@@ -275,7 +273,7 @@ async def optimize_route(req: OptimizationRequest):
                 "lat": wp.get("latitude", 0),
                 "lon": wp.get("longitude", 0),
                 "course_to_next": wp.get("course_to_next", 0) if j < len(raw_waypoints) - 1 else 0,
-                "suggested_speed_kn": round(alt_speeds[j] if j < len(alt_speeds) else alt_avg, 1),
+                "suggested_speed_kn": round(fixed_speed, 1),
                 "distance_to_next_nm": round(seg_dists[j] if j < len(seg_dists) else 0, 2),
             })
         alternatives.append({
@@ -287,6 +285,7 @@ async def optimize_route(req: OptimizationRequest):
             "total_cost_usd": round(alt_fuel * 650, 2),
             "optimization_score": round(total_distance / alt_fuel if alt_fuel > 0 else 0, 3),
             "route_type": route_type,
+            "avg_speed_kn": round(fixed_speed, 1),
             "waypoints": alt_waypoints,
         })
 
@@ -314,13 +313,15 @@ async def optimize_route(req: OptimizationRequest):
         "speed_profile": speed_stats,
         "recommended_route": {
             "route_id": route_key,
-            "route_name": route.get("name", route_key).replace("_", " "),
+            "route_name": "Optimized Route (Balanced)",
+            "original_route_name": route.get("name", route_key).replace("_", " "),
             "total_distance_nm": round(total_distance, 2),
             "estimated_duration_hours": round(actual_duration, 2),
             "total_fuel_mt": round(fuel_consumption, 3),
             "total_cost_usd": round(fuel_consumption * 650, 2),
             "optimization_score": round(total_distance / fuel_consumption if fuel_consumption > 0 else 0, 3),
             "route_type": "optimal",
+            "avg_speed_kn": round(optimal_speed, 1),
             "waypoints": formatted_waypoints,
         },
         "alternative_routes": alternatives,

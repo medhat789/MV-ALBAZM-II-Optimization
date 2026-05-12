@@ -353,6 +353,11 @@ const EnhancedShipOptimizer = () => {
                 <h3 className="font-heading text-base font-semibold text-white uppercase tracking-tight flex items-center gap-2">
                   <Navigation className="w-4 h-4 text-cyan-400" />
                   {results.recommended_route.route_name}
+                  {results.recommended_route.original_route_name && (
+                    <span className="text-xs text-slate-500 font-mono normal-case ml-2">
+                      ({results.recommended_route.original_route_name})
+                    </span>
+                  )}
                 </h3>
                 <span className="bg-navy-700 text-cyan-400 font-mono text-xs px-2 py-1 rounded-sm border border-navy-700 uppercase">
                   Recommended
@@ -413,6 +418,7 @@ const EnhancedShipOptimizer = () => {
                       <tr className="bg-navy-900">
                         <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Route</th>
                         <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Type</th>
+                        <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Speed (kn)</th>
                         <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Fuel (MT)</th>
                         <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Time (hrs)</th>
                         <th className="px-4 py-3 text-left font-mono text-xs uppercase tracking-wider text-slate-400">Score</th>
@@ -422,6 +428,7 @@ const EnhancedShipOptimizer = () => {
                       <tr className="border-b border-navy-700 bg-cyan-400/5">
                         <td className="px-4 py-3 text-sm text-cyan-400 font-medium">{results.recommended_route.route_name}</td>
                         <td className="px-4 py-3"><span className="bg-navy-700 text-cyan-400 font-mono text-xs px-2 py-0.5 rounded-sm uppercase">Optimal</span></td>
+                        <td className="px-4 py-3 font-mono text-sm text-cyan-400">{results.recommended_route.avg_speed_kn?.toFixed(1) || (results.recommended_route.total_distance_nm / results.recommended_route.estimated_duration_hours).toFixed(1)}{results.speed_profile?.mode === "variable" ? " (var)" : ""}</td>
                         <td className="px-4 py-3 font-mono text-sm text-white">{results.recommended_route.total_fuel_mt.toFixed(2)}</td>
                         <td className="px-4 py-3 font-mono text-sm text-white">{results.recommended_route.estimated_duration_hours.toFixed(1)}</td>
                         <td className="px-4 py-3 font-mono text-sm text-cyan-400">{results.recommended_route.optimization_score.toFixed(3)}</td>
@@ -430,6 +437,7 @@ const EnhancedShipOptimizer = () => {
                         <tr key={route.route_id} className="border-b border-navy-700 hover:bg-navy-800/50 transition-colors">
                           <td className="px-4 py-3 text-sm text-slate-300">{route.route_name}</td>
                           <td className="px-4 py-3"><span className="bg-navy-700 text-slate-400 font-mono text-xs px-2 py-0.5 rounded-sm uppercase">{route.route_type}</span></td>
+                          <td className="px-4 py-3 font-mono text-sm text-slate-300">{route.avg_speed_kn?.toFixed(1) ?? "—"}</td>
                           <td className="px-4 py-3 font-mono text-sm text-slate-300">{route.total_fuel_mt.toFixed(2)}</td>
                           <td className="px-4 py-3 font-mono text-sm text-slate-300">{route.estimated_duration_hours.toFixed(1)}</td>
                           <td className="px-4 py-3 font-mono text-sm text-slate-400">{route.optimization_score.toFixed(3)}</td>
