@@ -190,8 +190,10 @@ class AlbazmMLSystem:
         wind_impact = (df['wind_speed'] - 8.5) * 0.02 # 2% impact per m/s deviation
         df['fuel_mt'] = df['fuel_mt'] * (1 + wind_impact)
         
-        # Sea state (Douglas scale 2-4 typical)
-        df['sea_state'] = np.random.choice([2, 3, 4], n, p=[0.4, 0.4, 0.2])
+        # Sea state (Douglas scale 2-4 typical) — np.random is fine here:
+        # this is statistical sampling for synthetic training-data augmentation,
+        # not a security-sensitive operation.
+        df['sea_state'] = np.random.choice([2, 3, 4], n, p=[0.4, 0.4, 0.2])  # noqa: S311  # nosec B311
         
         return df
     

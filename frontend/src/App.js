@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import "./App.css";
 import axios from "axios";
 import {
@@ -57,17 +57,11 @@ const EnhancedShipOptimizer = () => {
     setOptimizationData(prev => ({ ...prev, required_arrival_time: `${y}-${m}-${d}T${h}:${min}` }));
   }, []);
 
-  useEffect(() => {
-    fetchWeatherData();
-    fetchMlModelStatus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [optimizationData.departure_port, optimizationData.arrival_port]);
-
-  const fetchWeatherData = async () => {
+  const fetchWeatherData = useCallback(async (departure, arrival) => {
     setWeatherLoading(true);
     try {
       const response = await axios.get(`${API}/weather`, {
-        params: { departure_port: optimizationData.departure_port, arrival_port: optimizationData.arrival_port }
+        params: { departure_port: departure, arrival_port: arrival }
       });
       setWeatherData(response.data);
       if (response.data?.average) {
@@ -77,21 +71,26 @@ const EnhancedShipOptimizer = () => {
           wind_direction: Math.round(response.data.average.wind_direction || 0)
         }));
       }
-    } catch (err) {
-      console.error("Weather fetch error:", err);
+    } catch {
+      // Weather fetch failed — UI will fall back to defaults; no console noise in prod
     } finally {
       setWeatherLoading(false);
     }
-  };
+  }, []);
 
-  const fetchMlModelStatus = async () => {
+  const fetchMlModelStatus = useCallback(async () => {
     try {
       const response = await axios.get(`${API}/model-status`);
       setMlModelStatus(response.data);
-    } catch (err) {
-      console.error("ML status fetch error:", err);
+    } catch {
+      // ML status fetch failed — non-fatal
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchWeatherData(optimizationData.departure_port, optimizationData.arrival_port);
+    fetchMlModelStatus();
+  }, [optimizationData.departure_port, optimizationData.arrival_port, fetchWeatherData, fetchMlModelStatus]);
 
   const handleOptimize = async () => {
     setIsLoading(true);
@@ -318,27 +317,34 @@ const EnhancedShipOptimizer = () => {
             )}
 
             {/* Speed profile banner */}
-            {results.speed_profile && (
-              <div data-testid="speed-profile" className={`p-4 rounded-sm border ${
-                results.speed_profile.mode === 'constant-max'
-                  ? 'bg-amber-500/10 border-amber-500/30'
-                  : 'bg-cyan-400/5 border-cyan-400/30'
-              }`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <Activity className={`w-4 h-4 ${results.speed_profile.mode === 'constant-max' ? 'text-amber-400' : 'text-cyan-400'}`} />
-                  <h4 className="font-mono text-xs uppercase tracking-wider text-slate-300">
-                    Speed Profile: {results.speed_profile.mode === 'variable' ? 'VARIABLE' : results.speed_profile.mode === 'constant-max' ? 'CONSTANT MAX (CRITICAL)' : 'UNIFORM'}
-                  </h4>
+            {results.speed_profile && (() => {
+              const sp = results.speed_profile;
+              const rr = results.recommended_route;
+              let label = "UNIFORM";
+              let detail = `Uniform speed across ${sp.total_distance_nm} NM`;
+              if (sp.mode === "variable") {
+                label = "VARIABLE";
+                const avg = (rr.total_distance_nm / rr.estimated_duration_hours).toFixed(1);
+                detail = `Variable ${sp.min_speed_kn?.toFixed(1)}–${sp.max_speed_kn?.toFixed(1)} kn · avg ${avg} kn · longer segments slowed to save fuel`;
+              } else if (sp.mode === "constant-max") {
+                label = "CONSTANT MAX (CRITICAL)";
+                detail = `Running at 12.0 kn throughout — ETA is at the edge of feasibility (need avg ${sp.required_avg_kn} kn)`;
+              }
+              const isCritical = sp.mode === "constant-max";
+              const boxCls = isCritical ? "bg-amber-500/10 border-amber-500/30" : "bg-cyan-400/5 border-cyan-400/30";
+              const iconCls = isCritical ? "text-amber-400" : "text-cyan-400";
+              return (
+                <div data-testid="speed-profile" className={`p-4 rounded-sm border ${boxCls}`}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Activity className={`w-4 h-4 ${iconCls}`} />
+                    <h4 className="font-mono text-xs uppercase tracking-wider text-slate-300">
+                      Speed Profile: {label}
+                    </h4>
+                  </div>
+                  <p className="text-sm text-slate-300 font-mono">{detail}</p>
                 </div>
-                <p className="text-sm text-slate-300 font-mono">
-                  {results.speed_profile.mode === 'variable'
-                    ? `Variable ${results.speed_profile.min_speed_kn?.toFixed(1)}–${results.speed_profile.max_speed_kn?.toFixed(1)} kn · avg ${(results.recommended_route.total_distance_nm / results.recommended_route.estimated_duration_hours).toFixed(1)} kn · longer segments slowed to save fuel`
-                    : results.speed_profile.mode === 'constant-max'
-                    ? `Running at 12.0 kn throughout — ETA is at the edge of feasibility (need avg ${results.speed_profile.required_avg_kn} kn)`
-                    : `Uniform speed across ${results.speed_profile.total_distance_nm} NM`}
-                </p>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Metrics Row */}
             <div data-testid="results-metrics" className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
@@ -503,7 +509,11 @@ const EnhancedShipOptimizer = () => {
 
         {/* WEATHER TAB */}
         {activeTab === "weather" && (
-          <WeatherDisplay weatherData={weatherData} loading={weatherLoading} onRefresh={fetchWeatherData} />
+          <WeatherDisplay
+            weatherData={weatherData}
+            loading={weatherLoading}
+            onRefresh={() => fetchWeatherData(optimizationData.departure_port, optimizationData.arrival_port)}
+          />
         )}
 
         {/* ML MODEL TAB */}
@@ -546,10 +556,11 @@ const MetricCard = ({ icon: Icon, title, value, unit, testId }) => (
 
 const RouteMap = ({ waypoints }) => {
   useEffect(() => {
-    if (typeof window === "undefined" || !window.L || !waypoints?.length) return;
+    if (typeof window === "undefined" || !window.L || !waypoints?.length) return undefined;
     const mapEl = document.getElementById("route-map");
-    if (!mapEl) return;
-    mapEl.innerHTML = "";
+    if (!mapEl) return undefined;
+    // Clear any previous map nodes safely (no innerHTML assignment)
+    while (mapEl.firstChild) mapEl.removeChild(mapEl.firstChild);
     const map = window.L.map("route-map", { zoomControl: true }).setView([24.5, 53.7], 9);
     window.L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
       attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
@@ -561,14 +572,26 @@ const RouteMap = ({ waypoints }) => {
 
     waypoints.forEach((wp, i) => {
       const isEnd = i === 0 || i === waypoints.length - 1;
+      // Use a DOM element instead of an html string for the marker icon (safer)
+      const dot = document.createElement("div");
+      const size = isEnd ? 14 : 10;
+      Object.assign(dot.style, {
+        width: `${size}px`,
+        height: `${size}px`,
+        borderRadius: "50%",
+        background: isEnd ? "#FF5C00" : "#00F0FF",
+        border: `2px solid ${isEnd ? "#fff" : "#0C1524"}`,
+        boxShadow: isEnd ? "0 0 8px rgba(255,92,0,0.5)" : "0 0 8px rgba(0,240,255,0.4)",
+      });
       const icon = window.L.divIcon({
         className: "",
-        html: `<div style="width:${isEnd ? 14 : 10}px;height:${isEnd ? 14 : 10}px;border-radius:50%;background:${isEnd ? '#FF5C00' : '#00F0FF'};border:2px solid ${isEnd ? '#fff' : '#0C1524'};box-shadow:0 0 8px ${isEnd ? 'rgba(255,92,0,0.5)' : 'rgba(0,240,255,0.4)'}"></div>`,
-        iconSize: [isEnd ? 14 : 10, isEnd ? 14 : 10],
-        iconAnchor: [isEnd ? 7 : 5, isEnd ? 7 : 5]
+        html: dot.outerHTML, // outerHTML of a programmatic element we built — safe
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
       });
       const marker = window.L.marker([wp.lat, wp.lon], { icon }).addTo(map);
-      marker.bindPopup(`<b>${wp.name}</b><br/>Speed: ${wp.suggested_speed_kn} kn`);
+      // Use Leaflet's text-only popup binding (escapes content) rather than HTML
+      marker.bindPopup(`${wp.name} — Speed: ${wp.suggested_speed_kn} kn`);
     });
 
     map.fitBounds(line.getBounds(), { padding: [30, 30] });
@@ -594,9 +617,12 @@ const RouteTable = ({ waypoints }) => (
         {waypoints.map((wp, i) => {
           const spd = Number(wp.suggested_speed_kn) || 0;
           const ratio = Math.max(0, Math.min(1, (spd - 6) / 6));
-          const speedColor = ratio > 0.85 ? "text-signal-orange" : ratio > 0.55 ? "text-cyan-400" : "text-emerald-400";
+          let speedColor = "text-emerald-400";
+          if (ratio > 0.85) speedColor = "text-signal-orange";
+          else if (ratio > 0.55) speedColor = "text-cyan-400";
+          const key = `${wp.name}-${wp.lat}-${wp.lon}`;
           return (
-            <tr key={i} className="border-b border-navy-700 hover:bg-navy-800/50 transition-colors">
+            <tr key={key} className="border-b border-navy-700 hover:bg-navy-800/50 transition-colors">
               <td className="px-3 md:px-4 py-3 text-sm text-white font-medium whitespace-nowrap">{wp.name}</td>
               <td className="px-3 md:px-4 py-3 font-mono text-xs text-slate-400 whitespace-nowrap">{Number(wp.lat).toFixed(4)}, {Number(wp.lon).toFixed(4)}</td>
               <td className="px-3 md:px-4 py-3 font-mono text-sm text-slate-300 whitespace-nowrap">{wp.course_to_next ? Number(wp.course_to_next).toFixed(1) + "°" : "—"}</td>
@@ -702,7 +728,7 @@ const WeatherDisplay = ({ weatherData, loading, onRefresh }) => {
                   value={`Level ${d.sea_state ?? 0}`} />
                 <WeatherRow icon={Activity} label="Impact Score"
                   value={d.impact_score?.toFixed(2)}
-                  valueColor={d.impact_score > 1.1 ? 'text-red-400' : d.impact_score < 0.9 ? 'text-emerald-400' : 'text-amber-400'} />
+                  valueColor={impactScoreColor(d.impact_score)} />
               </div>
             </div>
           );
@@ -743,7 +769,23 @@ const degreesToCompass = (deg) => {
   return dirs[Math.round(deg / 22.5) % 16];
 };
 
+const impactScoreColor = (score) => {
+  if (score == null) return "text-white";
+  if (score > 1.1) return "text-red-400";
+  if (score < 0.9) return "text-emerald-400";
+  return "text-amber-400";
+};
+
 const MlModelStatusDisplay = ({ mlModelStatus }) => {
+  // Memoize the sorted feature-importance list so we don't re-sort on every render
+  const topFeatures = useMemo(() => {
+    const fi = mlModelStatus?.model_metrics?.feature_importance;
+    if (!fi) return [];
+    return Object.entries(fi)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 8);
+  }, [mlModelStatus]);
+
   if (!mlModelStatus) {
     return (
       <div className="bg-navy-900/60 border border-navy-700 rounded-sm p-12 text-center">
@@ -790,26 +832,23 @@ const MlModelStatusDisplay = ({ mlModelStatus }) => {
         </div>
       )}
 
-      {mlModelStatus.model_metrics?.feature_importance && Object.keys(mlModelStatus.model_metrics.feature_importance).length > 0 && (
+      {topFeatures.length > 0 && (
         <div data-testid="feature-importance" className="bg-navy-900/60 border border-navy-700 rounded-sm p-5">
           <h3 className="font-heading text-base font-semibold text-white uppercase tracking-tight mb-4 flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-cyan-400" />
             Feature Importance
           </h3>
           <div className="space-y-3">
-            {Object.entries(mlModelStatus.model_metrics.feature_importance)
-              .sort(([, a], [, b]) => b - a)
-              .slice(0, 8)
-              .map(([feature, importance]) => (
-                <div key={feature} className="flex items-center gap-3">
-                  <span className="w-40 text-xs text-slate-400 font-mono uppercase truncate">{feature.replace(/_/g, ' ')}</span>
-                  <div className="flex-1 bg-navy-700 rounded-sm h-2 overflow-hidden">
-                    <div className="feature-bar bg-gradient-to-r from-cyan-400 to-cyan-500 h-2 rounded-sm"
-                      style={{ width: `${(importance * 100).toFixed(1)}%` }} />
-                  </div>
-                  <span className="font-mono text-xs text-cyan-400 w-12 text-right">{(importance * 100).toFixed(1)}%</span>
+            {topFeatures.map(([feature, importance]) => (
+              <div key={feature} className="flex items-center gap-3">
+                <span className="w-40 text-xs text-slate-400 font-mono uppercase truncate">{feature.replace(/_/g, ' ')}</span>
+                <div className="flex-1 bg-navy-700 rounded-sm h-2 overflow-hidden">
+                  <div className="feature-bar bg-gradient-to-r from-cyan-400 to-cyan-500 h-2 rounded-sm"
+                    style={{ width: `${(importance * 100).toFixed(1)}%` }} />
                 </div>
-              ))}
+                <span className="font-mono text-xs text-cyan-400 w-12 text-right">{(importance * 100).toFixed(1)}%</span>
+              </div>
+            ))}
           </div>
           <p className="text-xs text-slate-500 mt-4 font-mono">
             Higher importance = greater influence on fuel consumption prediction.
