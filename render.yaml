@@ -1,0 +1,26 @@
+# ============================================================
+# Render Blueprint (render.com)
+#
+# 1. Push this repo to GitHub
+# 2. In Render → New → Blueprint → connect repo
+# 3. Render auto-detects this file and provisions the service.
+# 4. Free tier works (512 MB RAM is enough for the ML model).
+# ============================================================
+services:
+  - type: web
+    name: mv-albazm-ii
+    runtime: docker
+    plan: free                # bump to 'starter' ($7/mo) for always-on + 512MB
+    rootDir: .
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 10000           # Render uses 10000
+      - key: WEB_CONCURRENCY
+        value: 1
+      - key: CORS_ORIGINS
+        value: "*"
+      # The frontend is built into the same image with REACT_APP_BACKEND_URL=""
+      # (same-origin), so no extra env var is needed at runtime.

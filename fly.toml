@@ -1,0 +1,43 @@
+# ============================================================
+# Fly.io configuration
+#
+#   1. brew install flyctl   (or curl -L https://fly.io/install.sh | sh)
+#   2. fly auth login
+#   3. fly launch --no-deploy --copy-config --name mv-albazm-ii
+#   4. fly deploy
+#
+# Fly's free tier covers small persistent VMs; this fits well within it.
+# ============================================================
+app = "mv-albazm-ii"
+primary_region = "dxb"  # Dubai (closest to operations); change to your region
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  WEB_CONCURRENCY = "1"
+  CORS_ORIGINS = "*"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 60
+    soft_limit = 40
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "40s"
+    method = "GET"
+    path = "/api/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"   # 1 GB is comfortable for sklearn + Random Forest

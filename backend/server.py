@@ -16,11 +16,32 @@ from typing import Dict, List, Optional
 from dotenv import load_dotenv
 from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 BASE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE_DIR))
 load_dotenv(BASE_DIR / ".env")
+
+# Production-friendly: allow overriding CORS via env var
+CORS_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o.strip()]
+
+# Locations where the built React app might live (mounted at /).
+# When the backend is dockerized alongside the frontend build it sits in
+# /app/frontend_build or ./frontend_build relative to the server.py.
+FRONTEND_BUILD_CANDIDATES = [
+    Path(os.environ.get("FRONTEND_BUILD_DIR", "")) if os.environ.get("FRONTEND_BUILD_DIR") else None,
+    BASE_DIR.parent / "frontend" / "build",
+    BASE_DIR.parent / "frontend_build",
+    BASE_DIR / "frontend_build",
+    Path("/app/frontend/build"),
+    Path("/app/frontend_build"),
+]
+FRONTEND_BUILD_DIR: Optional[Path] = next(
+    (p for p in FRONTEND_BUILD_CANDIDATES if p and p.exists() and (p / "index.html").exists()),
+    None,
+)
 
 # Dubai timezone (UTC+4)
 DUBAI_TZ = timezone(timedelta(hours=4))
@@ -45,7 +66,7 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -401,11 +422,41 @@ async def get_academic_report():
 app.include_router(api_router)
 
 
-@app.get("/")
-async def health_root():
-    return {
-        "service": "M/V Al-bazm II Optimization API",
-        "status": "operational",
-        "docs": "/docs",
-        "api": "/api",
-    }
+# -------------------- Frontend static-file serving --------------------------
+# When the React app has been built into /app/frontend/build (or the path set
+# via FRONTEND_BUILD_DIR), serve it from "/". The /api/* routes above keep
+# working because the API router is included BEFORE this mount.
+if FRONTEND_BUILD_DIR is not None:
+    logger.info("📁 Serving React build from %s", FRONTEND_BUILD_DIR)
+    # Mount the /static directory for hashed JS/CSS/images
+    static_dir = FRONTEND_BUILD_DIR / "static"
+    if static_dir.exists():
+        app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
+    @app.get("/", include_in_schema=False)
+    async def serve_index() -> FileResponse:
+        return FileResponse(str(FRONTEND_BUILD_DIR / "index.html"))
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa(full_path: str):
+        # /api/* should never reach here (it's matched by the api_router above),
+        # but guard explicitly so we always return JSON for unknown API routes.
+        if full_path.startswith("api/"):
+            return JSONResponse({"detail": "Not Found"}, status_code=404)
+        candidate = FRONTEND_BUILD_DIR / full_path
+        if candidate.is_file():
+            return FileResponse(str(candidate))
+        # SPA fallback — let React Router handle client-side routes
+        return FileResponse(str(FRONTEND_BUILD_DIR / "index.html"))
+else:
+    logger.info("⚠️  No React build directory found — serving JSON root only "
+                "(dev mode; React runs on its own port)")
+
+    @app.get("/")
+    async def health_root():
+        return {
+            "service": "M/V Al-bazm II Optimization API",
+            "status": "operational",
+            "docs": "/docs",
+            "api": "/api",
+        }

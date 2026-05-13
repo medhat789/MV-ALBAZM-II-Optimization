@@ -1,0 +1,56 @@
+# === Git / repo ===
+.git
+.github
+.gitignore
+.gitattributes
+
+# === Python ===
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+**/*.egg-info
+.venv
+venv
+env
+
+# === Node ===
+**/node_modules
+**/frontend/build
+**/.next
+**/.cache
+**/.yarn
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# === Tests / scratch ===
+backend_test.py
+test_core.py
+test_reports/
+tests/
+test_result.md
+plan.md
+memory/
+
+# === Editor / OS ===
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# === Local env (the platform injects its own) ===
+backend/.env
+frontend/.env
+.env.local
+.env.development
+.env.test
+
+# === Logs ===
+**/*.log
+
+# === Docker artifacts ===
+Dockerfile.local
+docker-compose.override.yml
