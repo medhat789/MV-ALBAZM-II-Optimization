@@ -190,7 +190,7 @@ class AlbazmMLSystem:
         df["date"] = pd.to_datetime(df["date"], errors="coerce")
         for col in ["duration", "distance_nm", "speed_knots", "fuel_mt", "slip"]:
             if col in df.columns:
-                df[col] = pd.to_numeric(df[col].astype(str).str.replace("�", "").str.strip(), errors="coerce")
+                df[col] = pd.to_numeric(df[col].astype(str).str.replace("?", "").str.strip(), errors="coerce")
 
         if "load_pct" in df.columns:
             df["load_pct"] = pd.to_numeric(df["load_pct"].astype(str).str.replace("%", ""), errors="coerce")
