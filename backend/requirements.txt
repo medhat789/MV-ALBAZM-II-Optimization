@@ -17,6 +17,7 @@ pandas==3.0.2
 scikit-learn==1.8.0
 scipy==1.17.1
 joblib==1.5.3
+python-calamine>=0.1.0
 
 # Excel readers (used by the data-prep utility scripts)
 openpyxl==3.1.5
