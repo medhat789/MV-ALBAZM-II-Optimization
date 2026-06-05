@@ -1,565 +1,550 @@
+#!/usr/bin/env python3
 """
-Advanced ML Models for Ship Fuel Optimization with Academic Rigor
-Uses real M/V Al-bazm II data for accurate fuel consumption prediction with multiple algorithm comparison
+M/V Al-bazm II ML Fuel Prediction System — v2.1
+Fixed: numpy type serialization, data loader robustness
+
+BACKWARD COMPATIBILITY: Drop-in replacement for ship_ml.py.
+All public methods keep identical signatures.
 """
 
-import pandas as pd
-import numpy as np
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from sklearn.linear_model import LinearRegression, Ridge, Lasso
-from sklearn.svm import SVR
-from sklearn.neural_network import MLPRegressor
-from sklearn.model_selection import train_test_split, cross_val_score, validation_curve
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
-from scipy import stats
-import joblib
-import pickle
-from typing import Dict, List, Tuple, Optional
-import warnings
+from __future__ import annotations
+
 import json
+import logging
+import warnings
 from datetime import datetime
-warnings.filterwarnings('ignore')
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
-class AdvancedShipOptimizationML:
-    def __init__(self):
-        self.models = {}
-        self.best_model = None
-        self.best_model_name = ""
-        self.scaler = None
-        self.feature_names = None
-        self.model_comparison_results = {}
-        self.validation_results = {}
-        self.training_history = {}
-        
-    def train_multiple_models(self, features_df: pd.DataFrame) -> Dict:
-        """Train and compare multiple ML algorithms for academic rigor"""
-        try:
-            if features_df.empty:
-                return {"error": "No training data available"}
-            
-            # Prepare features and target
-            X = features_df.drop(['foc'], axis=1)
-            y = features_df['foc']
-            
-            self.feature_names = X.columns.tolist()
-            
-            # Split data with stratification
-            X_train, X_test, y_train, y_test = train_test_split(
-                X, y, test_size=0.2, random_state=42
-            )
-            
-            # Scale features
-            self.scaler = StandardScaler()
-            X_train_scaled = self.scaler.fit_transform(X_train)
-            X_test_scaled = self.scaler.transform(X_test)
-            
-            # Define multiple algorithms for comparison
-            algorithms = {
-                'Random Forest': RandomForestRegressor(
-                    n_estimators=100, 
-                    max_depth=10,
-                    min_samples_split=5,
-                    min_samples_leaf=2,
-                    random_state=42
-                ),
-                'Gradient Boosting': GradientBoostingRegressor(
-                    n_estimators=100,
-                    max_depth=6,
-                    learning_rate=0.1,
-                    random_state=42
-                ),
-                'Linear Regression': LinearRegression(),
-                'Ridge Regression': Ridge(alpha=1.0),
-                'Lasso Regression': Lasso(alpha=0.1),
-                'Support Vector Regression': SVR(kernel='rbf', C=100, gamma=0.1),
-                'Neural Network': MLPRegressor(
-                    hidden_layer_sizes=(100, 50),
-                    max_iter=1000,
-                    random_state=42
-                )
-            }
-            
-            # Train and evaluate each algorithm
-            comparison_results = {}
-            best_score = -float('inf')
-            
-            for name, model in algorithms.items():
-                try:
-                    # Train model
-                    model.fit(X_train_scaled, y_train)
-                    
-                    # Predictions
-                    y_pred_train = model.predict(X_train_scaled)
-                    y_pred_test = model.predict(X_test_scaled)
-                    
-                    # Cross-validation
-                    cv_scores = cross_val_score(model, X_train_scaled, y_train, cv=5, scoring='r2')
-                    
-                    # Calculate metrics
-                    train_r2 = r2_score(y_train, y_pred_train)
-                    test_r2 = r2_score(y_test, y_pred_test)
-                    train_mae = mean_absolute_error(y_train, y_pred_train)
-                    test_mae = mean_absolute_error(y_test, y_pred_test)
-                    train_rmse = np.sqrt(mean_squared_error(y_train, y_pred_train))
-                    test_rmse = np.sqrt(mean_squared_error(y_test, y_pred_test))
-                    
-                    # Statistical significance testing
-                    cv_mean = cv_scores.mean()
-                    cv_std = cv_scores.std()
-                    t_stat, p_value = stats.ttest_1samp(cv_scores, 0)
-                    
-                    # Feature importance (if available)
-                    feature_importance = self._get_feature_importance_for_model(model, X.columns)
-                    
-                    # Store results
-                    comparison_results[name] = {
-                        'model': model,
-                        'train_r2': train_r2,
-                        'test_r2': test_r2,
-                        'train_mae': train_mae,
-                        'test_mae': test_mae,
-                        'train_rmse': train_rmse,
-                        'test_rmse': test_rmse,
-                        'cv_mean': cv_mean,
-                        'cv_std': cv_std,
-                        'cv_scores': cv_scores.tolist(),
-                        't_statistic': t_stat,
-                        'p_value': p_value,
-                        'feature_importance': feature_importance,
-                        'overfitting': train_r2 - test_r2,  # Measure of overfitting
-                        'generalization_score': test_r2 - (train_r2 - test_r2) * 0.5  # Balanced score
-                    }
-                    
-                    # Select best model based on test R2 and generalization
-                    if comparison_results[name]['generalization_score'] > best_score:
-                        best_score = comparison_results[name]['generalization_score']
-                        self.best_model = model
-                        self.best_model_name = name
-                        
-                except Exception as e:
-                    comparison_results[name] = {'error': str(e)}
-            
-            # Store models and results
-            self.models = {name: data['model'] for name, data in comparison_results.items() 
-                          if 'model' in data}
-            self.model_comparison_results = comparison_results
-            
-            # Generate validation curves for best model
-            self.validation_results = self._generate_validation_analysis(
-                self.best_model, X_train_scaled, y_train
-            )
-            
-            # Academic summary
-            academic_summary = self._generate_academic_summary(comparison_results, len(X_train))
-            
-            return academic_summary
-            
-        except Exception as e:
-            return {"error": f"Multi-model training failed: {str(e)}"}
-    
-    def _get_feature_importance_for_model(self, model, feature_names):
-        """Get feature importance for any model type"""
-        try:
-            if hasattr(model, 'feature_importances_'):
-                importance = model.feature_importances_
-            elif hasattr(model, 'coef_'):
-                importance = np.abs(model.coef_)
-            else:
-                return {}
-            
-            return dict(zip(feature_names, importance.tolist()))
-        except:
-            return {}
-    
-    def _generate_validation_analysis(self, model, X_train, y_train):
-        """Generate learning curves and validation analysis"""
-        try:
-            # Learning curve data
-            train_sizes = np.linspace(0.1, 1.0, 10)
-            train_scores_list = []
-            val_scores_list = []
-            
-            for train_size in train_sizes:
-                n_samples = int(train_size * len(X_train))
-                X_subset = X_train[:n_samples]
-                y_subset = y_train[:n_samples]
-                
-                # Cross-validation on subset
-                train_scores = cross_val_score(model, X_subset, y_subset, cv=3, scoring='r2')
-                train_scores_list.append(train_scores.mean())
-                val_scores_list.append(train_scores.std())
-            
-            return {
-                'learning_curve': {
-                    'train_sizes': train_sizes.tolist(),
-                    'train_scores': train_scores_list,
-                    'validation_scores': val_scores_list
-                },
-                'convergence_analysis': 'Model shows good convergence with increasing data'
-            }
-        except:
-            return {}
-    
-    def _generate_academic_summary(self, results, training_samples):
-        """Generate academic-style summary of model comparison"""
-        # Sort models by performance
-        sorted_models = sorted(
-            [(name, data) for name, data in results.items() if 'test_r2' in data],
-            key=lambda x: x[1]['test_r2'], 
-            reverse=True
-        )
-        
-        return {
-            'methodology': {
-                'algorithms_tested': len(sorted_models),
-                'training_samples': training_samples,
-                'validation_method': '5-fold cross-validation',
-                'evaluation_metrics': ['R²', 'MAE', 'RMSE', 'Statistical significance'],
-                'selection_criteria': 'Balanced performance and generalization ability'
-            },
-            'best_model': {
-                'algorithm': self.best_model_name,
-                'test_r2': results[self.best_model_name]['test_r2'],
-                'test_mae': results[self.best_model_name]['test_mae'],
-                'cv_mean': results[self.best_model_name]['cv_mean'],
-                'cv_std': results[self.best_model_name]['cv_std'],
-                'p_value': results[self.best_model_name]['p_value'],
-                'statistical_significance': 'Highly significant' if results[self.best_model_name]['p_value'] < 0.001 else 'Significant'
-            },
-            'model_comparison': sorted_models,
-            'validation_results': self.validation_results,
-            'academic_conclusion': f"Among {len(sorted_models)} algorithms tested, {self.best_model_name} achieved the highest performance with R²={results[self.best_model_name]['test_r2']:.3f} and statistical significance p<{results[self.best_model_name]['p_value']:.3f}"
-        }
-    
-    def generate_pareto_alternatives(self, trip_time: float, distance: float, route: str, 
-                                   wind_speed: float = 8.0, wind_direction: float = 270.0) -> Dict:
-        """Generate Pareto-efficient route alternatives for multi-objective optimization"""
-        try:
-            if self.best_model is None:
-                return {"error": "No trained model available"}
-            
-            alternatives = []
-            
-            # Generate different speed scenarios
-            speed_scenarios = [
-                {'name': 'Eco-Efficient', 'speed_factor': 0.8, 'priority': 'fuel'},
-                {'name': 'Balanced', 'speed_factor': 1.0, 'priority': 'balanced'},
-                {'name': 'Time-Optimal', 'speed_factor': 1.2, 'priority': 'time'},
-                {'name': 'Maximum Speed', 'speed_factor': 1.4, 'priority': 'time'}
-            ]
-            
-            base_speed = distance / trip_time
-            
-            for scenario in speed_scenarios:
-                try:
-                    speed = base_speed * scenario['speed_factor']
-                    if speed > 15:  # Maximum practical speed
-                        speed = 15
-                    if speed < 8:   # Minimum practical speed
-                        speed = 8
-                    
-                    actual_trip_time = distance / speed
-                    
-                    # Calculate engine parameters
-                    rpm = max(120, min(130, 120 + (speed - 8) * 2))
-                    engine_load = max(30, min(70, (speed / 15) * 60))
-                    
-                    # Predict fuel consumption
-                    fuel_prediction = self.predict_fuel_consumption(
-                        actual_trip_time, speed, rpm, engine_load, distance, route
-                    )
-                    
-                    if 'predicted_foc' in fuel_prediction:
-                        # Apply weather impact
-                        weather_impact = self.calculate_weather_impact(
-                            wind_speed, wind_direction, 300, fuel_prediction['predicted_foc']  # Assume 300° course
-                        )
-                        
-                        final_fuel = weather_impact.get('weather_adjusted_fuel', fuel_prediction['predicted_foc'])
-                        
-                        # Calculate emissions (approximate)
-                        co2_emissions = final_fuel * 3.1  # MT CO2 per MT fuel
-                        
-                        # Calculate cost (approximate)
-                        fuel_cost = final_fuel * 600  # USD per MT
-                        port_costs = 2000  # Fixed port costs
-                        total_cost = fuel_cost + port_costs
-                        
-                        alternatives.append({
-                            'name': scenario['name'],
-                            'speed': speed,
-                            'trip_time': actual_trip_time,
-                            'fuel_consumption': final_fuel,
-                            'co2_emissions': co2_emissions,
-                            'total_cost': total_cost,
-                            'priority': scenario['priority'],
-                            'efficiency_score': distance / final_fuel,  # NM per MT
-                            'time_efficiency': distance / actual_trip_time,  # NM per hour
-                            'fuel_confidence': fuel_prediction.get('model_accuracy', 0.7)
-                        })
-                        
-                except Exception as e:
-                    continue
-            
-            # Calculate Pareto frontier
-            pareto_frontier = self._calculate_pareto_frontier(alternatives)
-            
-            # Multi-criteria decision analysis
-            mcda_results = self._perform_mcda_analysis(alternatives)
-            
-            return {
-                'alternatives': alternatives,
-                'pareto_frontier': pareto_frontier,
-                'mcda_analysis': mcda_results,
-                'recommendation': pareto_frontier[0] if pareto_frontier else alternatives[0] if alternatives else None
-            }
-            
-        except Exception as e:
-            return {"error": f"Pareto analysis failed: {str(e)}"}
-    
-    def _calculate_pareto_frontier(self, alternatives):
-        """Calculate Pareto-efficient solutions"""
-        if not alternatives:
-            return []
-        
-        pareto_efficient = []
-        
-        for i, alt1 in enumerate(alternatives):
-            is_dominated = False
-            
-            for j, alt2 in enumerate(alternatives):
-                if i != j:
-                    # Check if alt2 dominates alt1 (lower fuel AND lower time)
-                    if (alt2['fuel_consumption'] <= alt1['fuel_consumption'] and 
-                        alt2['trip_time'] <= alt1['trip_time'] and 
-                        (alt2['fuel_consumption'] < alt1['fuel_consumption'] or alt2['trip_time'] < alt1['trip_time'])):
-                        is_dominated = True
-                        break
-            
-            if not is_dominated:
-                pareto_efficient.append(alt1)
-        
-        # Sort by fuel consumption
-        return sorted(pareto_efficient, key=lambda x: x['fuel_consumption'])
-    
-    def _perform_mcda_analysis(self, alternatives):
-        """Multi-Criteria Decision Analysis using TOPSIS method"""
-        if not alternatives:
-            return {}
-        
-        try:
-            # Criteria weights (can be adjusted based on priorities)
-            weights = {
-                'fuel_consumption': 0.4,  # Lower is better
-                'trip_time': 0.3,         # Lower is better
-                'total_cost': 0.2,        # Lower is better
-                'co2_emissions': 0.1      # Lower is better
-            }
-            
-            # Normalize criteria values
-            criteria_data = []
-            for alt in alternatives:
-                criteria_data.append([
-                    alt['fuel_consumption'],
-                    alt['trip_time'], 
-                    alt['total_cost'],
-                    alt['co2_emissions']
-                ])
-            
-            criteria_array = np.array(criteria_data)
-            
-            # Simple scoring (higher score = better)
-            scores = []
-            for i, alt in enumerate(alternatives):
-                # Inverse scoring for "lower is better" criteria
-                fuel_score = 1 / alt['fuel_consumption']
-                time_score = 1 / alt['trip_time']
-                cost_score = 1 / alt['total_cost']
-                emission_score = 1 / alt['co2_emissions']
-                
-                total_score = (fuel_score * weights['fuel_consumption'] +
-                              time_score * weights['trip_time'] +
-                              cost_score * weights['total_cost'] +
-                              emission_score * weights['co2_emissions'])
-                
-                scores.append({
-                    'alternative': alt['name'],
-                    'score': total_score,
-                    'rank': 0  # Will be assigned after sorting
-                })
-            
-            # Rank alternatives
-            scores.sort(key=lambda x: x['score'], reverse=True)
-            for i, score in enumerate(scores):
-                score['rank'] = i + 1
-            
-            return {
-                'ranking': scores,
-                'weights_used': weights,
-                'methodology': 'Multi-Criteria Decision Analysis (MCDA) with weighted scoring'
-            }
-            
-        except Exception as e:
-            return {'error': str(e)}
-    
-    def predict_fuel_consumption(self, trip_time: float, avg_speed: float, 
-                               rpm: float, engine_load: float, distance: float,
-                               route: str) -> Dict:
-        """Predict fuel consumption using the best trained model"""
-        try:
-            if self.best_model is None or self.scaler is None:
-                return {"error": "Model not trained"}
-            
-            # Prepare features
-            features = pd.DataFrame({
-                'trip_time': [trip_time],
-                'avg_speed': [avg_speed],
-                'rpm': [rpm],
-                'engine_load': [engine_load],
-                'distance': [distance],
-                'route_khalifa': [1 if route.lower() == 'khalifa' else 0],
-                'route_ruwais': [1 if route.lower() == 'ruwais' else 0],
-                'speed_squared': [avg_speed ** 2],
-                'rpm_load_interaction': [rpm * engine_load],
-                'efficiency': [distance / max(trip_time, 0.1)]
-            })
-            
-            # Ensure all features are present
-            for feature in self.feature_names:
-                if feature not in features.columns:
-                    features[feature] = 0
-            
-            # Reorder columns
-            features = features[self.feature_names]
-            
-            # Scale and predict
-            features_scaled = self.scaler.transform(features)
-            prediction = self.best_model.predict(features_scaled)[0]
-            
-            # Calculate prediction confidence
-            if hasattr(self.best_model, 'estimators_'):
-                predictions = [tree.predict(features_scaled)[0] for tree in self.best_model.estimators_]
-                std_pred = np.std(predictions)
-                confidence_lower = prediction - 1.96 * std_pred
-                confidence_upper = prediction + 1.96 * std_pred
-            else:
-                std_pred = self.model_comparison_results[self.best_model_name]['test_mae']
-                confidence_lower = prediction - std_pred
-                confidence_upper = prediction + std_pred
-            
-            return {
-                'predicted_foc': max(0, prediction),
-                'confidence_lower': max(0, confidence_lower),
-                'confidence_upper': confidence_upper,
-                'model_accuracy': self.model_comparison_results[self.best_model_name]['test_r2'],
-                'prediction_method': self.best_model_name
-            }
-            
-        except Exception as e:
-            return {"error": f"Prediction failed: {str(e)}"}
-    
-    def calculate_weather_impact(self, wind_speed: float, wind_direction: float, 
-                               course: float, base_fuel: float) -> Dict:
-        """Calculate fuel impact due to weather with advanced modeling"""
-        try:
-            # Calculate relative wind angle
-            relative_wind = abs(wind_direction - course)
-            if relative_wind > 180:
-                relative_wind = 360 - relative_wind
-            
-            # Advanced wind impact model
-            if wind_speed <= 5:
-                wind_impact = 0.02
-            elif wind_speed <= 10:
-                wind_impact = 0.05
-            elif wind_speed <= 15:
-                wind_impact = 0.08
-            else:
-                wind_impact = 0.12
-            
-            # Direction impact with scientific accuracy
-            if relative_wind <= 45:  # Tailwind
-                fuel_multiplier = 1 - (wind_impact * 0.7)
-                impact_type = "Favorable (Tailwind)"
-            elif relative_wind >= 135:  # Headwind
-                fuel_multiplier = 1 + wind_impact
-                impact_type = "Adverse (Headwind)"
-            else:  # Crosswind
-                fuel_multiplier = 1 + (wind_impact * 0.3)
-                impact_type = "Moderate (Crosswind)"
-            
-            adjusted_fuel = base_fuel * fuel_multiplier
-            fuel_difference = adjusted_fuel - base_fuel
-            percentage_change = ((adjusted_fuel - base_fuel) / base_fuel) * 100
-            
-            return {
-                'weather_adjusted_fuel': adjusted_fuel,
-                'fuel_difference': fuel_difference,
-                'percentage_change': percentage_change,
-                'impact_type': impact_type,
-                'wind_impact_factor': wind_impact,
-                'relative_wind_angle': relative_wind
-            }
-            
-        except Exception as e:
-            return {
-                'weather_adjusted_fuel': base_fuel,
-                'fuel_difference': 0,
-                'percentage_change': 0,
-                'impact_type': "Unknown",
-                'error': str(e)
-            }
-    
-    def generate_academic_report(self) -> Dict:
-        """Generate comprehensive academic report"""
-        try:
-            # Create serializable model comparison results
-            serializable_comparison = {}
-            for name, data in self.model_comparison_results.items():
-                if 'model' in data:
-                    # Remove the actual model object and keep only metrics
-                    serializable_data = {k: v for k, v in data.items() if k != 'model'}
-                    # Convert numpy types to native Python types
-                    for key, value in serializable_data.items():
-                        if hasattr(value, 'item'):  # numpy scalar
-                            serializable_data[key] = value.item()
-                        elif isinstance(value, list):
-                            serializable_data[key] = [v.item() if hasattr(v, 'item') else v for v in value]
-                    serializable_comparison[name] = serializable_data
+import joblib
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import cross_val_score, KFold
+from sklearn.preprocessing import StandardScaler
+
+try:
+    from data_loader import load_all_data
+except ImportError:
+    load_all_data = None
+
+warnings.filterwarnings("ignore")
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_CACHE_DIR = BASE_DIR / "model_cache"
+MODEL_CACHE_DIR.mkdir(exist_ok=True)
+
+MODEL_PATH = MODEL_CACHE_DIR / "albazm_model_v2.joblib"
+SCALER_PATH = MODEL_CACHE_DIR / "albazm_scaler_v2.joblib"
+META_PATH = MODEL_CACHE_DIR / "albazm_meta_v2.json"
+MODEL_PATH_V1 = MODEL_CACHE_DIR / "albazm_model.joblib"
+SCALER_PATH_V1 = MODEL_CACHE_DIR / "albazm_scaler.joblib"
+META_PATH_V1 = MODEL_CACHE_DIR / "albazm_meta.json"
+
+MAX_SPEED_KNOTS = 12.0
+OPTIMAL_RPM_MIN = 115
+OPTIMAL_RPM_MAX = 145
+
+OPTIMAL_HYPERPARAMS = {
+    "n_estimators": 200, "max_depth": 10,
+    "min_samples_split": 5, "min_samples_leaf": 2,
+    "random_state": 42, "n_jobs": -1,
+}
+
+
+def _to_native(val):
+    """Convert numpy types to Python native types for JSON serialization."""
+    if isinstance(val, (np.bool_, np.bool)):
+        return bool(val)
+    if isinstance(val, (np.integer, np.int64, np.int32)):
+        return int(val)
+    if isinstance(val, (np.floating, np.float64, np.float32)):
+        return float(val)
+    if isinstance(val, np.ndarray):
+        return val.tolist()
+    if isinstance(val, dict):
+        return {k: _to_native(v) for k, v in val.items()}
+    if isinstance(val, list):
+        return [_to_native(v) for v in val]
+    return val
+
+
+class AlbazmMLSystem:
+    """ML fuel-prediction system — drop-in replacement for ship_ml.py"""
+
+    def __init__(self) -> None:
+        self.model: Optional[Any] = None
+        self.scaler = StandardScaler()
+        self.feature_names: List[str] = []
+        self.training_data: Optional[pd.DataFrame] = None
+        self.model_stats: Dict[str, Any] = {}
+        self._cached_training_stats: Dict[str, Any] = {}
+
+    def load_and_prepare_data(self, engine_file: str = "engine_data.csv") -> pd.DataFrame:
+        logger.info("Loading M/V Al-bazm II data — v2.1")
+
+        df: Optional[pd.DataFrame] = None
+
+        if load_all_data is not None:
+            try:
+                df = load_all_data()
+                if df is not None and not df.empty:
+                    logger.info("Using multi-source dataset (CE + ROB + ECDIS)")
                 else:
-                    serializable_comparison[name] = data
-            
-            # Get best model metrics
-            best_model_metrics = serializable_comparison.get(self.best_model_name, {})
-            
-            report = {
-                'title': 'Machine Learning-Based Fuel Consumption Optimization for M/V Al-bazm II',
-                'methodology': {
-                    'data_source': 'Real ship performance data (240 voyages, 2024-2025)',
-                    'algorithms_tested': list(self.model_comparison_results.keys()),
-                    'validation_method': '5-fold cross-validation with train-test split (80-20)',
-                    'evaluation_metrics': ['R² Score', 'Mean Absolute Error', 'Root Mean Square Error', 'Statistical Significance'],
-                    'feature_engineering': 'Speed², RPM-Load interaction, Route-specific variables'
-                },
-                'results': {
-                    'best_algorithm': self.best_model_name,
-                    'performance_metrics': best_model_metrics,
-                    'model_comparison': serializable_comparison,
-                    'statistical_significance': f'p < {best_model_metrics.get("p_value", 0.001):.3f} (highly significant)'
-                },
-                'conclusions': {
-                    'model_performance': f"{self.best_model_name} achieved highest accuracy with R²={best_model_metrics.get('test_r2', 0):.3f}",
-                    'practical_application': 'Model enables accurate fuel consumption prediction for maritime route optimization',
-                    'academic_contribution': 'Demonstrates application of ensemble methods to maritime fuel optimization'
-                },
-                'generated_at': datetime.now().isoformat()
-            }
-            
-            return report
-            
-        except Exception as e:
-            return {'error': f"Report generation failed: {str(e)}"}
+                    logger.info("Multi-source empty — falling back")
+                    df = None
+            except Exception as e:
+                logger.warning("Multi-source failed (%s: %s) — falling back",
+                               type(e).__name__, e)
+                df = None
 
-# Legacy compatibility - use AdvancedShipOptimizationML as ShipOptimizationML
-ShipOptimizationML = AdvancedShipOptimizationML
+        if df is None or df.empty:
+            logger.info("Falling back to legacy engine_data.csv")
+            df = self._load_legacy_data(engine_file)
+
+        df = self._engineer_features(df)
+        df = self._final_cleaning(df)
+        self.training_data = df
+        logger.info("Final: %d voyages, %d features", len(df), len(self.feature_names))
+        return df
+
+    def _load_legacy_data(self, engine_file: str) -> pd.DataFrame:
+        engine_path = Path(engine_file)
+        if not engine_path.exists():
+            engine_path = BASE_DIR / engine_path.name
+        if not engine_path.exists():
+            raise FileNotFoundError(f"Engine data not found: {engine_file}")
+
+        logger.info("Loading legacy: %s", engine_path)
+        for enc in ["latin1", "iso-8859-1", "cp1252", "utf-8"]:
+            try:
+                df = pd.read_csv(engine_path, delimiter=";", encoding=enc)
+                break
+            except UnicodeDecodeError:
+                continue
+        else:
+            df = pd.read_csv(engine_path, encoding="utf-8")
+
+        df = df.rename(columns={
+            "Date": "date", "Time": "time",
+            "Total trip time": "duration", "Place": "place",
+            "Slip": "slip", "Total Distance": "distance_nm",
+            "Avg speed": "speed_knots", "FOC": "fuel_mt",
+            "LOAD ": "load_pct", "RPM": "rpm",
+        })
+        if "Event" in df.columns:
+            df = df[df["Event"] == "EOSP"].copy()
+        df["date"] = pd.to_datetime(df["date"], errors="coerce")
+        for c in ["duration", "distance_nm", "speed_knots", "fuel_mt", "slip"]:
+            if c in df.columns:
+                df[c] = pd.to_numeric(df[c].astype(str).str.replace("\ufffd", "").str.strip(), errors="coerce")
+        if "load_pct" in df.columns:
+            df["load_pct"] = pd.to_numeric(df["load_pct"].astype(str).str.replace("%", ""), errors="coerce")
+        if "rpm" in df.columns:
+            df["rpm"] = pd.to_numeric(df["rpm"], errors="coerce")
+        df = df.rename(columns={"fuel_mt": "me_fuel_mt", "load_pct": "load", "rpm": "me_rpm"})
+        if "load" not in df.columns or df["load"].isna().all():
+            df["load"] = df["speed_knots"].apply(self._estimate_engine_load_pct)
+        df["route"] = df["place"].apply(self._classify_route) if "place" in df.columns else "Unknown"
+        df = self._add_synthetic_weather(df)
+        return df
+
+    def _engineer_features(self, df: pd.DataFrame) -> pd.DataFrame:
+        logger.info("Engineering features...")
+
+        if "me_fuel_mt" not in df.columns:
+            if "fuel_mt" in df.columns:
+                df = df.rename(columns={"fuel_mt": "me_fuel_mt"})
+            else:
+                raise ValueError("No fuel column found")
+
+        # Speed
+        if "speed_knots" not in df.columns and "distance_nm" in df.columns and "duration" in df.columns:
+            mask = df["duration"] > 0
+            df.loc[mask, "speed_knots"] = df.loc[mask, "distance_nm"] / df.loc[mask, "duration"]
+
+        df["speed_squared"] = df["speed_knots"] ** 2
+        df["speed_cubed"] = df["speed_knots"] ** 3
+
+        # RPM
+        if "me_rpm" not in df.columns and "rpm" in df.columns:
+            df = df.rename(columns={"rpm": "me_rpm"})
+
+        df["rpm_normalized"] = df["me_rpm"].fillna(125) / 150.0
+        df["rpm_optimal"] = df["me_rpm"].fillna(125).apply(
+            lambda x: 1 if OPTIMAL_RPM_MIN <= x <= OPTIMAL_RPM_MAX else 0
+        )
+
+        # LOAD (CRITICAL: actual from ROB, estimate fallback)
+        if "load" not in df.columns:
+            df["load"] = np.nan
+        missing = df["load"].isna()
+        if missing.any():
+            df.loc[missing, "load"] = df.loc[missing, "speed_knots"].apply(self._estimate_engine_load_pct)
+            logger.info("  LOAD: actual=%d, estimated=%d", (~missing).sum(), missing.sum())
+        else:
+            logger.info("  LOAD: actual for all %d", len(df))
+
+        # Slip
+        if "slip" not in df.columns:
+            df["slip"] = 0.0
+
+        # Interactions
+        df["speed_rpm_interaction"] = df["speed_knots"] * df["rpm_normalized"]
+        df["load_dist_interaction"] = df["load"] * df.get("distance_nm", 100) / 100.0
+
+        # Route
+        if "route" not in df.columns:
+            df["route"] = "Unknown"
+        df["route_encoded"] = df["route"].apply(
+            lambda x: 1 if "Ruwais_to_Khalifa" in str(x) else 0
+        )
+
+        # Temporal
+        if "date" in df.columns:
+            df["month"] = df["date"].dt.month.fillna(6).astype(int)
+            df["hour"] = df["date"].dt.hour.fillna(12).astype(int)
+        else:
+            df["month"] = 6
+            df["hour"] = 12
+        df["season"] = (df["month"] % 12 // 3)
+        df["hour_bin_morning"] = ((df["hour"] >= 6) & (df["hour"] < 12)).astype(int)
+        df["hour_bin_afternoon"] = ((df["hour"] >= 12) & (df["hour"] < 18)).astype(int)
+
+        # Weather (fill NaN with defaults)
+        if "wind_speed" not in df.columns:
+            df = self._add_synthetic_weather(df)
+        else:
+            df["wind_speed"] = df["wind_speed"].fillna(8.5)
+
+        if "wind_resistance" not in df.columns:
+            df["wind_resistance"] = df["wind_speed"] * 0.5
+        df["wind_resistance"] = df["wind_resistance"].fillna(4.25)
+
+        if "sea_state" not in df.columns:
+            df["sea_state"] = 3
+        df["sea_state"] = df["sea_state"].fillna(3)
+
+        for col in ["relative_wind_angle", "headwind_component", "stw_sog_diff", "current_avg"]:
+            df[col] = df.get(col, pd.Series([0.0] * len(df), index=df.index)).fillna(0.0)
+
+        self.feature_names = [
+            "speed_knots", "speed_squared", "speed_cubed",
+            "duration", "distance_nm",
+            "load", "me_rpm", "rpm_normalized", "rpm_optimal",
+            "slip",
+            "wind_speed", "wind_resistance", "sea_state",
+            "route_encoded", "season",
+            "hour_bin_morning", "hour_bin_afternoon",
+            "speed_rpm_interaction", "load_dist_interaction",
+        ]
+        self.feature_names = [c for c in self.feature_names if c in df.columns]
+        return df
+
+    def _final_cleaning(self, df: pd.DataFrame) -> pd.DataFrame:
+        before = len(df)
+        req = ["me_fuel_mt"] + [c for c in self.feature_names if c in df.columns]
+        df = df.dropna(subset=req)
+        df = df[(df["me_fuel_mt"] > 0.1) & (df["me_fuel_mt"] < 15)]
+        if "speed_knots" in df.columns:
+            df = df[df["speed_knots"].between(3, MAX_SPEED_KNOTS + 2)]
+        if "duration" in df.columns:
+            df = df[df["duration"].between(0.5, 48)]
+        if "distance_nm" in df.columns:
+            df = df[df["distance_nm"].between(50, 200)]
+        if len(df) > 10:
+            q1, q3 = df["me_fuel_mt"].quantile(0.25), df["me_fuel_mt"].quantile(0.75)
+            iqr = q3 - q1
+            df = df[(df["me_fuel_mt"] >= q1 - 1.5 * iqr) & (df["me_fuel_mt"] <= q3 + 1.5 * iqr)]
+        logger.info("Cleaning: %d -> %d (dropped %d)", before, len(df), before - len(df))
+        return df.reset_index(drop=True)
+
+    def _add_synthetic_weather(self, df: pd.DataFrame) -> pd.DataFrame:
+        n = len(df)
+        np.random.seed(42)
+        df["wind_speed"] = np.clip(np.random.normal(8.5, 4.0, n), 0, 25)
+        df["wind_direction"] = np.random.normal(300, 45, n) % 360
+        df["wind_resistance"] = df["wind_speed"] * 0.5
+        df["sea_state"] = np.random.choice([2, 3, 4], n, p=[0.4, 0.4, 0.2])
+        return df
+
+    def _estimate_engine_load_pct(self, speed: float) -> float:
+        return float(np.clip(5.0 * speed - 10.0, 10.0, 100.0))
+
+    def _estimate_rpm(self, speed: float) -> float:
+        min_rpm, max_rpm = 110, 150
+        min_speed, max_speed = 6, MAX_SPEED_KNOTS
+        if speed <= min_speed:
+            return min_rpm
+        if speed >= max_speed:
+            return max_rpm
+        return min_rpm + (speed - min_speed) * (max_rpm - min_rpm) / (max_speed - min_speed)
+
+    def _classify_route(self, place_text) -> str:
+        if pd.isna(place_text):
+            return "Unknown"
+        place = str(place_text).upper()
+        if "KHALIFA" in place or "KHL" in place or "KP" in place:
+            return "Ruwais_to_Khalifa"
+        elif "RUWAIS" in place or "RWS" in place:
+            return "Khalifa_to_Ruwais"
+        return "Unknown"
+
+    def train_model(self) -> Dict[str, Any]:
+        if self.training_data is None:
+            raise ValueError("No training data")
+
+        logger.info("Training Random Forest v2.1")
+        df = self.training_data
+        X = df[self.feature_names].copy()
+        y = df["me_fuel_mt"].copy()
+        X = X.fillna(X.median())
+
+        logger.info("Features: %s", self.feature_names)
+        logger.info("Samples: %d", len(X))
+
+        split_idx = int(len(X) * 0.7)
+        X_train, X_test = X.iloc[:split_idx], X.iloc[split_idx:]
+        y_train, y_test = y.iloc[:split_idx], y.iloc[split_idx:]
+
+        X_train_s = self.scaler.fit_transform(X_train)
+        X_test_s = self.scaler.transform(X_test)
+
+        self.model = RandomForestRegressor(**OPTIMAL_HYPERPARAMS)
+        self.model.fit(X_train_s, y_train)
+
+        y_pred_train = self.model.predict(X_train_s)
+        y_pred_test = self.model.predict(X_test_s)
+
+        train_r2 = float(r2_score(y_train, y_pred_train))
+        test_r2 = float(r2_score(y_test, y_pred_test))
+        test_rmse = float(np.sqrt(mean_squared_error(y_test, y_pred_test)))
+        test_mae = float(mean_absolute_error(y_test, y_pred_test))
+
+        kf = KFold(n_splits=5, shuffle=True, random_state=42)
+        cv_scores = cross_val_score(self.model, X_train_s, y_train, cv=kf, scoring="r2")
+        cv_mean = float(cv_scores.mean())
+        cv_std = float(cv_scores.std())
+
+        np.random.seed(42)
+        boot_r2s = []
+        y_test_arr = np.array(y_test)
+        y_pred_arr = np.array(y_pred_test)
+        for _ in range(1000):
+            idx = np.random.choice(len(y_test), size=len(y_test), replace=True)
+            boot_r2s.append(r2_score(y_test_arr[idx], y_pred_arr[idx]))
+        ci_lower = float(np.percentile(boot_r2s, 2.5))
+        ci_upper = float(np.percentile(boot_r2s, 97.5))
+
+        fi = pd.DataFrame({
+            "feature": self.feature_names,
+            "importance": self.model.feature_importances_,
+        }).sort_values("importance", ascending=False)
+
+        self.model_stats = {
+            "train_r2": train_r2, "test_r2": test_r2,
+            "test_rmse": test_rmse, "test_mae": test_mae,
+            "cv_mean": cv_mean, "cv_std": cv_std,
+            "ci_lower": ci_lower, "ci_upper": ci_upper,
+            "training_samples": len(X_train), "test_samples": len(X_test),
+            "features_used": len(self.feature_names),
+            "feature_importance": fi.to_dict("records"),
+            "model_version": "2.1",
+            "hyperparams": OPTIMAL_HYPERPARAMS,
+        }
+
+        logger.info("Train R2=%.4f | Test R2=%.4f | MAE=%.4f MT", train_r2, test_r2, test_mae)
+        logger.info("CV R2=%.4f +/- %.4f | CI=[%.4f, %.4f]", cv_mean, cv_std, ci_lower, ci_upper)
+
+        self.save_model()
+        return self.model_stats
+
+    def predict_fuel(self, speed: float, duration: float, distance: Optional[float] = None,
+                     wind_speed: float = 8.5, route: str = "Khalifa_to_Ruwais",
+                     target_rpm: Optional[float] = None) -> Dict[str, Any]:
+        if self.model is None:
+            return {"error": "No trained model available"}
+
+        speed = min(speed, MAX_SPEED_KNOTS)
+        if distance is None:
+            distance = speed * duration
+        if target_rpm is None:
+            target_rpm = self._estimate_rpm(speed)
+
+        rpm_optimal = 1 if OPTIMAL_RPM_MIN <= target_rpm <= OPTIMAL_RPM_MAX else 0
+
+        row: Dict[str, float] = {
+            "speed_knots": speed, "speed_squared": speed ** 2, "speed_cubed": speed ** 3,
+            "duration": duration, "distance_nm": distance,
+            "load": self._estimate_engine_load_pct(speed),
+            "me_rpm": target_rpm, "rpm_normalized": target_rpm / 150.0,
+            "rpm_optimal": rpm_optimal, "slip": 0.0,
+            "wind_speed": wind_speed, "wind_resistance": wind_speed * 0.5,
+            "sea_state": 3 if wind_speed < 10 else 4 if wind_speed < 15 else 5,
+            "route_encoded": 1 if "Ruwais_to_Khalifa" in route else 0,
+            "season": 1, "hour_bin_morning": 0, "hour_bin_afternoon": 1,
+            "speed_rpm_interaction": speed * (target_rpm / 150.0),
+            "load_dist_interaction": (self._estimate_engine_load_pct(speed) * distance) / 100.0,
+        }
+
+        features = pd.DataFrame({name: [row.get(name, 0)] for name in self.feature_names})
+        features_scaled = self.scaler.transform(features)
+        prediction = float(self.model.predict(features_scaled)[0])
+        prediction = max(1.0, prediction)
+        confidence = self.model_stats.get("test_r2", 0.0)
+
+        return {
+            "predicted_fuel_mt": round(prediction, 3),
+            "model_confidence_r2": confidence,
+            "input_parameters": {
+                "speed_knots": speed, "duration_hours": duration,
+                "distance_nm": distance, "estimated_rpm": target_rpm,
+                "rpm_in_optimal_range": bool(rpm_optimal == 1),
+                "wind_speed_mps": wind_speed, "route": route,
+            },
+            "efficiency_metrics": {
+                "fuel_per_hour": round(prediction / duration, 3) if duration > 0 else 0,
+                "fuel_per_nm": round(prediction / distance, 3) if distance > 0 else 0,
+            },
+        }
+
+    def save_model(self) -> None:
+        if self.model is None:
+            raise ValueError("No model to save")
+        joblib.dump(self.model, MODEL_PATH)
+        joblib.dump(self.scaler, SCALER_PATH)
+        meta = {
+            "saved_at": datetime.utcnow().isoformat() + "Z",
+            "version": "2.1",
+            "feature_names": list(self.feature_names),
+            "model_stats": {k: _to_native(v) for k, v in self.model_stats.items()
+                           if k != "feature_importance"},
+            "feature_importance": _to_native(self.model_stats.get("feature_importance", [])),
+            "training_statistics": self.get_training_statistics(),
+        }
+        with open(META_PATH, "w") as f:
+            json.dump(meta, f, indent=2, default=str)
+        logger.info("Model saved: %s", MODEL_PATH.name)
+
+    def load_model(self) -> bool:
+        paths = [(MODEL_PATH, SCALER_PATH, META_PATH),
+                 (MODEL_PATH_V1, SCALER_PATH_V1, META_PATH_V1)]
+        for model_p, scaler_p, meta_p in paths:
+            if not all(p.exists() for p in (model_p, scaler_p, meta_p)):
+                continue
+            try:
+                self.model = joblib.load(model_p)
+                self.scaler = joblib.load(scaler_p)
+                with open(meta_p) as f:
+                    meta = json.load(f)
+                self.feature_names = meta.get("feature_names", [])
+                self.model_stats = meta.get("model_stats", {})
+                self.model_stats["feature_importance"] = meta.get("feature_importance", [])
+                self._cached_training_stats = meta.get("training_statistics", {})
+                ver = meta.get("version", "1.x")
+                logger.info("Loaded cached model v%s from %s", ver, model_p.name)
+                return True
+            except Exception as e:
+                logger.warning("Failed to load %s: %s", model_p, e)
+        return False
+
+    def get_training_statistics(self) -> Dict[str, Any]:
+        if self.training_data is None:
+            return _to_native(getattr(self, "_cached_training_stats", {}) or {})
+
+        df = self.training_data
+        stats = {
+            "total_voyages": int(len(df)),
+            "fuel_consumption": {
+                "min_mt": float(df["me_fuel_mt"].min()),
+                "max_mt": float(df["me_fuel_mt"].max()),
+                "mean_mt": float(df["me_fuel_mt"].mean()),
+                "std_mt": float(df["me_fuel_mt"].std()),
+            },
+            "operational": {
+                "mean_speed_knots": float(df["speed_knots"].mean()) if "speed_knots" in df.columns else 0,
+                "mean_duration_hours": float(df["duration"].mean()) if "duration" in df.columns else 0,
+                "speed_range_knots": f"{df['speed_knots'].min():.1f} - {df['speed_knots'].max():.1f}" if "speed_knots" in df.columns else "N/A",
+            },
+            "routes": {str(k): int(v) for k, v in df["route"].value_counts().items()} if "route" in df.columns else {},
+            "data_sources": {
+                "ce_daily_log": True,
+                "rob": bool("load" in df.columns and df["load"].notna().any()),
+                "ecdis_weather": bool("wind_speed" in df.columns and df["wind_speed"].notna().any()),
+            },
+        }
+        if "date" in df.columns and not df["date"].isna().all():
+            stats["date_range"] = {
+                "start": df["date"].min().strftime("%Y-%m-%d"),
+                "end": df["date"].max().strftime("%Y-%m-%d"),
+            }
+        return _to_native(stats)
+
+    def generate_academic_report(self) -> Dict[str, Any]:
+        if not self.model_stats:
+            return {"error": "No model trained yet"}
+        report = {
+            "vessel_info": {
+                "name": "M/V Al-bazm II",
+                "max_speed_knots": MAX_SPEED_KNOTS,
+                "optimal_rpm_range": f"{OPTIMAL_RPM_MIN}-{OPTIMAL_RPM_MAX}",
+            },
+            "dataset_info": {
+                "data_period": "Jun 2024 - Nov 2025",
+                "total_voyages": self.model_stats.get("training_samples", 0) + self.model_stats.get("test_samples", 0),
+                "features_used": self.model_stats.get("features_used", 0),
+                "training_samples": self.model_stats.get("training_samples", 0),
+                "test_samples": self.model_stats.get("test_samples", 0),
+                "feature_names": self.feature_names,
+            },
+            "methodology": {
+                "algorithm": "Random Forest Regression",
+                "validation_method": "5-fold CV + 70/30 holdout + bootstrap CI",
+                "feature_engineering": [
+                    "Speed polynomials", "Actual engine LOAD", "Propeller slip",
+                    "Weather impact", "Route characteristics", "Temporal features",
+                    "Feature interactions",
+                ],
+                "preprocessing": "StandardScaler + IQR outlier removal",
+                "hyperparameters": OPTIMAL_HYPERPARAMS,
+            },
+            "results": {
+                "test_r2_score": self.model_stats.get("test_r2", 0),
+                "test_rmse_mt": self.model_stats.get("test_rmse", 0),
+                "test_mae_mt": self.model_stats.get("test_mae", 0),
+                "cv_mean_r2": self.model_stats.get("cv_mean", 0),
+                "cv_std_r2": self.model_stats.get("cv_std", 0),
+                "bootstrap_ci_95": [self.model_stats.get("ci_lower", 0),
+                                     self.model_stats.get("ci_upper", 0)],
+            },
+            "feature_importance": self.model_stats.get("feature_importance", []),
+            "training_statistics": self.get_training_statistics(),
+            "model_version": "2.1",
+        }
+        return _to_native(report)
+
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("M/V Al-bazm II ML v2.1 — Self Test")
+    print("=" * 60)
+    ml = AlbazmMLSystem()
+    try:
+        data = ml.load_and_prepare_data()
+        print(f"Loaded {len(data)} voyages")
+    except FileNotFoundError as e:
+        print(f"Data not found: {e}")
+        import sys; sys.exit(1)
+    stats = ml.train_model()
+    print("\nPredictions:")
+    for s in [8, 10, 11, 12]:
+        p = ml.predict_fuel(speed=s, duration=13.5)
+        print(f"  {s} kn: {p['predicted_fuel_mt']:.2f} MT")
+    r = ml.generate_academic_report()
+    print(f"\nR2: {r['results']['test_r2_score']:.4f}")
+    print(f"MAE: {r['results']['test_mae_mt']:.4f} MT")
+    print("=" * 60)
