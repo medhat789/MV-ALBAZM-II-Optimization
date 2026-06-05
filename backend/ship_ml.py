@@ -491,7 +491,8 @@ if __name__ == "__main__":
     r = ml.generate_academic_report()
     print(f"\nR2: {r['results']['test_r2_score']:.4f}")
     print(f"MAE: {r['results']['test_mae_mt']:.4f} MT")
-    print("=" * 60)BASE_DIR = Path(__file__).resolve().parent
+   print("=" * 60)
+BASE_DIR = Path(__file__).resolve().parent
 MODEL_CACHE_DIR = BASE_DIR / "model_cache"
 MODEL_CACHE_DIR.mkdir(exist_ok=True)
 
