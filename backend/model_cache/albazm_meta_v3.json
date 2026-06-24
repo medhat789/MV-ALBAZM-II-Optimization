@@ -1,0 +1,269 @@
+{
+  "saved_at": "2026-06-24T20:44:27.982844Z",
+  "version": "3.0",
+  "feature_names": [
+    "load_pct",
+    "rpm",
+    "slip_pct",
+    "trip_time_hrs",
+    "voyage_sequence",
+    "days_from_start",
+    "direction_kp_to_rws",
+    "wind_speed",
+    "wind_dir",
+    "max_wind",
+    "avg_speed"
+  ],
+  "model_stats": {
+    "train_r2": 0.9094804073075887,
+    "test_r2": 0.5642755538095313,
+    "stage1_r2": 0.6698854755877715,
+    "test_rmse": 0.27542443835374414,
+    "test_mae": 0.4238672878175346,
+    "cv_mean": 0.5642755538095313,
+    "cv_std": 0.12923072759470083,
+    "ci_lower": 0.30677976655846884,
+    "ci_upper": 0.7079152487392574,
+    "training_samples": 155,
+    "test_samples": 155,
+    "features_used": 11,
+    "model_version": "3.0",
+    "hyperparams": {
+      "n_estimators": 400,
+      "max_depth": 10,
+      "min_samples_leaf": 2,
+      "random_state": 42,
+      "n_jobs": -1
+    }
+  },
+  "feature_importance": [
+    {
+      "feature": "direction_kp_to_rws",
+      "importance_pct": 56.5
+    },
+    {
+      "feature": "load_pct",
+      "importance_pct": 17.8
+    },
+    {
+      "feature": "wind_dir",
+      "importance_pct": 6.8
+    },
+    {
+      "feature": "trip_time_hrs",
+      "importance_pct": 4.3
+    },
+    {
+      "feature": "days_from_start",
+      "importance_pct": 2.9
+    },
+    {
+      "feature": "slip_pct",
+      "importance_pct": 2.9
+    },
+    {
+      "feature": "voyage_sequence",
+      "importance_pct": 2.7
+    },
+    {
+      "feature": "wind_speed",
+      "importance_pct": 2.5
+    },
+    {
+      "feature": "rpm",
+      "importance_pct": 2.1
+    },
+    {
+      "feature": "avg_speed",
+      "importance_pct": 0.8
+    },
+    {
+      "feature": "max_wind",
+      "importance_pct": 0.8
+    }
+  ],
+  "diagnostics": {
+    "model_version": "3.0",
+    "model_type": "RandomForestRegressor",
+    "architecture": "two_stage_log_fpnm",
+    "deployment_rationale": "Selected over higher-accuracy Linear Regression for bounded predictions, native feature importance, and robustness to anomalous inputs (see manuscript Section 4.5).",
+    "feature_names": [
+      "load_pct",
+      "rpm",
+      "slip_pct",
+      "trip_time_hrs",
+      "voyage_sequence",
+      "days_from_start",
+      "direction_kp_to_rws",
+      "wind_speed",
+      "wind_dir",
+      "max_wind",
+      "avg_speed"
+    ],
+    "n_features": 11,
+    "training_samples": 155,
+    "stage1_r2": 0.6698854755877715,
+    "stage2_r2": 0.5642755538095313,
+    "mae_mt": 0.4238672878175346,
+    "bootstrap_ci_95": {
+      "lower": 0.30677976655846884,
+      "upper": 0.7079152487392574
+    },
+    "feature_importance": [
+      {
+        "feature": "direction_kp_to_rws",
+        "importance_pct": 56.5
+      },
+      {
+        "feature": "load_pct",
+        "importance_pct": 17.8
+      },
+      {
+        "feature": "wind_dir",
+        "importance_pct": 6.8
+      },
+      {
+        "feature": "trip_time_hrs",
+        "importance_pct": 4.3
+      },
+      {
+        "feature": "days_from_start",
+        "importance_pct": 2.9
+      },
+      {
+        "feature": "slip_pct",
+        "importance_pct": 2.9
+      },
+      {
+        "feature": "voyage_sequence",
+        "importance_pct": 2.7
+      },
+      {
+        "feature": "wind_speed",
+        "importance_pct": 2.5
+      },
+      {
+        "feature": "rpm",
+        "importance_pct": 2.1
+      },
+      {
+        "feature": "avg_speed",
+        "importance_pct": 0.8
+      },
+      {
+        "feature": "max_wind",
+        "importance_pct": 0.8
+      }
+    ],
+    "hyperparameters": {
+      "n_estimators": 400,
+      "max_depth": 10,
+      "min_samples_leaf": 2,
+      "random_state": 42
+    },
+    "ablation_study": {
+      "full_model": {
+        "r2": 0.49025771188264217,
+        "delta": 0.0,
+        "relative_pct": 0.0
+      },
+      "without_voyage_structure": {
+        "r2": 0.3709,
+        "delta": -0.1193,
+        "relative_pct": -24.3
+      },
+      "without_engine_performance": {
+        "r2": 0.4427,
+        "delta": -0.0476,
+        "relative_pct": -9.7
+      },
+      "without_weather": {
+        "r2": 0.5337,
+        "delta": 0.0434,
+        "relative_pct": 8.9
+      },
+      "without_temporal": {
+        "r2": 0.4462,
+        "delta": -0.0441,
+        "relative_pct": -9.0
+      }
+    },
+    "algorithm_comparison_14feat": {
+      "Linear_Regression": {
+        "stage1_r2": 0.6777,
+        "stage2_r2": 0.5891,
+        "mae_mt": 0.4197,
+        "ci_95": [
+          0.27038644023609976,
+          0.7356526964940455
+        ]
+      },
+      "SVR_RBF": {
+        "stage1_r2": 0.6755,
+        "stage2_r2": 0.5882,
+        "mae_mt": 0.4458,
+        "ci_95": [
+          0.36422038070880813,
+          0.714292010952004
+        ]
+      },
+      "Ridge": {
+        "stage1_r2": 0.6291,
+        "stage2_r2": 0.5339,
+        "mae_mt": 0.4514,
+        "ci_95": [
+          0.36386447885948203,
+          0.713183511319764
+        ]
+      },
+      "Random_Forest_14feat": {
+        "stage1_r2": 0.6476,
+        "stage2_r2": 0.4903,
+        "mae_mt": 0.441,
+        "ci_95": [
+          0.17556000173653322,
+          0.6879689699315845
+        ]
+      },
+      "Gradient_Boosting": {
+        "stage1_r2": 0.6575,
+        "stage2_r2": 0.4483,
+        "mae_mt": 0.4336,
+        "ci_95": [
+          0.05729279725092472,
+          0.7006649028986531
+        ]
+      }
+    }
+  },
+  "training_statistics": {
+    "total_voyages": 155,
+    "fuel_consumption": {
+      "min_mt": 5.0,
+      "max_mt": 9.6,
+      "mean_mt": 6.89032258064516,
+      "std_mt": 0.9184101306024979
+    },
+    "operational": {
+      "mean_speed_knots": 10.253235801198011,
+      "mean_duration_hours": 11.893548387096773,
+      "speed_range_knots": "7.2 - 13.1",
+      "mean_slip_pct": 23.02774193548387,
+      "slip_range_pct": "11.6 - 40.2"
+    },
+    "routes": {
+      "KP_to_RWS": 78,
+      "RWS_to_KP": 76,
+      "unknown": 1
+    },
+    "data_sources": {
+      "ce_daily_log": true,
+      "rob": true,
+      "ecdis_open_meteo_weather": true
+    },
+    "date_range": {
+      "start": "2024-06-29",
+      "end": "2025-04-14"
+    }
+  }
+}
