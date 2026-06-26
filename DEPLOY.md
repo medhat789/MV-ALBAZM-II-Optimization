@@ -1,4 +1,4 @@
-# Deploying M/V Al-bazm II Maritime Fuel Optimization
+# Deploying M/V Atlas Maritime Fuel Optimization
 
 This app is a **single-container** FastAPI service that **serves both** the React frontend (built into static files) and the `/api/*` endpoints. That means **one service, one URL, one cost** on any cloud host that supports Docker.
 
@@ -7,8 +7,8 @@ This app is a **single-container** FastAPI service that **serves both** the Reac
 ## TL;DR
 
 ```bash
-docker build -t mv-albazm-ii .
-docker run -p 8001:8001 mv-albazm-ii
+docker build -t mv-atlas .
+docker run -p 8001:8001 mv-atlas
 # → http://localhost:8001 serves the full app (UI + API)
 ```
 
@@ -22,7 +22,7 @@ That container is what you push to Render / Railway / Fly.io / DigitalOcean. No 
 2. Go to https://render.com → **New** → **Blueprint**.
 3. Connect your GitHub repo. Render auto-detects `render.yaml`.
 4. Click **Apply**. First build takes ~5 minutes (frontend build + Python deps).
-5. When it's live, Render gives you a URL like `https://mv-albazm-ii.onrender.com`.
+5. When it's live, Render gives you a URL like `https://mv-atlas.onrender.com`.
 6. Open it → the full app works.
 
 **Free tier notes:**
@@ -55,7 +55,7 @@ curl -L https://fly.io/install.sh | sh
 fly auth login
 
 # Launch (reads fly.toml; --no-deploy so we can inspect first)
-fly launch --no-deploy --copy-config --name mv-albazm-ii
+fly launch --no-deploy --copy-config --name mv-atlas
 
 # Deploy
 fly deploy

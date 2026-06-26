@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Backend API Testing for M/V Al-bazm II Maritime Fuel Optimization System
+Backend API Testing for M/V Atlas Maritime Fuel Optimization System
 Tests all backend endpoints with real API calls
 """
 import requests
@@ -338,7 +338,7 @@ class MaritimeAPITester:
 
 def main():
     print("="*60)
-    print("M/V AL-BAZM II BACKEND API TESTING")
+    print("M/V ATLAS BACKEND API TESTING")
     print("="*60)
     print(f"Testing endpoint: {BASE_URL}")
     print(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

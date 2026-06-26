@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-M/V Al-bazm II ML Fuel Prediction System — v3.0
+M/V Atlas ML Fuel Prediction System — v3.0
 Rebuilt to match the corrected thesis/manuscript methodology.
 
 Replaces the old date-merged, slip-zeroed pipeline (v2.1) with the
@@ -51,12 +51,12 @@ BASE_DIR = Path(__file__).resolve().parent
 MODEL_CACHE_DIR = BASE_DIR / "model_cache"
 MODEL_CACHE_DIR.mkdir(exist_ok=True)
 
-MODEL_PATH = MODEL_CACHE_DIR / "albazm_model_v3.joblib"
-SCALER_PATH = MODEL_CACHE_DIR / "albazm_scaler_v3.joblib"
-META_PATH = MODEL_CACHE_DIR / "albazm_meta_v3.json"
-MODEL_PATH_V1 = MODEL_CACHE_DIR / "albazm_model.joblib"
-SCALER_PATH_V1 = MODEL_CACHE_DIR / "albazm_scaler.joblib"
-META_PATH_V1 = MODEL_CACHE_DIR / "albazm_meta.json"
+MODEL_PATH = MODEL_CACHE_DIR / "vessel_model_v3.joblib"
+SCALER_PATH = MODEL_CACHE_DIR / "vessel_scaler_v3.joblib"
+META_PATH = MODEL_CACHE_DIR / "vessel_meta_v3.json"
+MODEL_PATH_V1 = MODEL_CACHE_DIR / "vessel_model.joblib"
+SCALER_PATH_V1 = MODEL_CACHE_DIR / "vessel_scaler.joblib"
+META_PATH_V1 = MODEL_CACHE_DIR / "vessel_meta.json"
 
 DIAGNOSTICS_PATH = BASE_DIR / "voyage_data" / "model_diagnostics_v3.json"
 
@@ -87,7 +87,7 @@ def _to_native(val):
     return val
 
 
-class AlbazmMLSystem:
+class AtlasMLSystem:
     """ML fuel-prediction system — v3.0, matches the corrected manuscript."""
 
     def __init__(self) -> None:
@@ -106,7 +106,7 @@ class AlbazmMLSystem:
         """Loads the validated 155-voyage dataset. `engine_file` kept for
         backward-compatible call signature but is no longer used directly —
         all sources are read from voyage_data/ via voyage_pipeline.py."""
-        logger.info("Loading M/V Al-bazm II data — v3.0 (validated pipeline)")
+        logger.info("Loading M/V Atlas data — v3.0 (validated pipeline)")
         df = load_voyage_dataset()
         self.training_data = df
         logger.info("Final: %d voyages, %d deployed features", len(df), len(self.feature_names))
@@ -354,7 +354,7 @@ class AlbazmMLSystem:
             return {"error": "No model trained yet"}
         report = {
             "vessel_info": {
-                "name": "M/V Al-bazm II",
+                "name": "M/V Atlas",
                 "type": "1,104 TEU feeder container vessel",
                 "route": "Khalifa Port <-> Ruwais Port (Arabian Gulf)",
                 "propeller_pitch_m": PROPELLER_PITCH_M,
@@ -409,9 +409,9 @@ class AlbazmMLSystem:
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("M/V Al-bazm II ML v3.0 — Self Test")
+    print("M/V Atlas ML v3.0 — Self Test")
     print("=" * 60)
-    ml = AlbazmMLSystem()
+    ml = AtlasMLSystem()
     data = ml.load_and_prepare_data()
     print(f"Loaded {len(data)} voyages")
     stats = ml.train_model()

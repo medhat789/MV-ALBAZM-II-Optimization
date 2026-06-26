@@ -1,4 +1,4 @@
-# plan.md — Maritime Fuel Optimization System (M/V Al-bazm II)
+# plan.md — Maritime Fuel Optimization System (M/V Atlas)
 
 ## 1. Objectives
 - Deliver a working V1 clone of the reference UI/flow (tabs: Optimization, Results, Weather, ML Model) with open access.

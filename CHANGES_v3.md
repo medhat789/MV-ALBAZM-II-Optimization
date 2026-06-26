@@ -52,3 +52,72 @@ speed and stability).
    app will load them instantly on startup rather than retraining from scratch
 4. Once redeployed, re-export the screenshots for manuscript Figures 6-7 from the
    live app — they'll now show the correct model
+
+---
+
+# v3.1 — Variable-speed validation + fuel-savings fix + anonymization
+
+## What was validated
+Tested whether per-segment speed variation (slowing on long segments, speeding
+on short ones, at a fixed overall average/ETA) actually reduces predicted fuel,
+since this was flagged as the thesis's main original idea.
+
+**Result: it doesn't.** Confirmed two ways:
+- **Analytically**: for any smooth speed-to-fuel relationship (cube law or otherwise),
+  minimizing fuel for a fixed total voyage time is solved by *constant* speed
+  across all segments -- a clean Lagrange-multiplier result, independent of how
+  distances are distributed.
+- **Empirically**: ran the actual deployed model against the real route at a 9 kn
+  required average -- variable speed came within 0.1% of constant speed (not a
+  real difference). Also found that evaluating the model at per-segment
+  granularity is itself invalid -- segment durations (minutes) fall far outside the
+  7-22 hour range the model was trained on, and naive per-segment summation
+  inflated total fuel ~2x versus the valid whole-voyage prediction.
+
+**What *is* real and validated**: reducing the *overall average speed* when
+schedule allows it (classic slow steaming). Sweeping 8-12 kn on the live route
+showed up to 17-18% predicted fuel savings at lower average speeds versus cruising
+at max speed -- a genuine, model-supported finding.
+
+## What changed in the app (backend/server.py)
+- Removed the fuel_savings line that used `random.uniform(3, 8)` -- this was a
+  literally random number, not computed from anything. Replaced with a real
+  comparison: achieved average speed vs. the constant-max-speed ("Fast Route")
+  alternative, both evaluated through the same model.
+- Reworded the speed_recommendation / eta_feasibility text for variable-speed
+  mode to stop claiming a per-segment fuel benefit, and to point to the real
+  lever (overall average speed) instead.
+- Removed the now-unused `import random`.
+
+## What changed in the frontend (frontend/src/App.js)
+- The Speed Profile banner no longer says "longer segments slowed to save fuel"
+  (false claim) -- it now explains that the fuel total reflects the overall
+  average speed, and points to the Fuel Savings insight for the real number.
+- No other frontend changes needed -- Pareto-Efficient Alternatives and the
+  Performance Data / Feature Importance panels already pull live from the API,
+  so they automatically reflect the corrected backend.
+
+## What changed in the manuscript
+Added new Section 4.6 ("Operational Speed Optimization: Isolating the Genuine
+Fuel-Saving Lever") with the full analytical + empirical validation and a new
+Table 6 (fuel vs. average speed). Updated the Abstract and Discussion to
+reference this finding. This is a legitimate, additional contribution --
+arguably stronger than the original per-segment claim would have been, since
+it's actually validated.
+
+## Anonymization
+Replaced every instance of the original vessel name (the original vessel name and its casing variants)
+across the entire repo -- code, comments, docstrings, config files
+(render.yaml, fly.toml, DEPLOY.md), and tests -- with the generic placeholder
+"Atlas" (class AtlasMLSystem, model files vessel_model_v3.joblib, etc.). Also
+removed several now-unused legacy files that still contained the real name and
+were no longer imported by anything (data_loader.py, enhanced_data_processor.py,
+ml_models.py, old ship_ml backups, and a legacy CSV with the name embedded in
+its data). Port names (Khalifa Port, Ruwais Port) were left as-is since they're
+public geography already in the manuscript, not vessel-identifying.
+
+## Verified
+- `python3 ship_ml.py` self-test: trains cleanly, Stage 2 R-squared = 0.564
+- Full /optimize simulation across multiple ETA scenarios: real savings figures
+  scale sensibly with schedule slack (15-17% with slack, ~1% when ETA is tight)
+- Repo-wide case-insensitive search for the old vessel name: zero remaining hits

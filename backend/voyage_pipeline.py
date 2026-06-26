@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-M/V Al-bazm II — Voyage Data Pipeline (v3)
+M/V Atlas — Voyage Data Pipeline (v3)
 =============================================
 Validated data loading + feature engineering pipeline matching the corrected
 thesis/manuscript methodology. Replaces the old date-merge approach in

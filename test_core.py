@@ -33,7 +33,7 @@ PORTS = {
 }
 DISTANCE_NM = 78.0  # Approx distance Khalifa <-> Ruwais
 VESSEL = {
-    "name": "M/V Al-bazm II",
+    "name": "M/V Atlas",
     "max_speed_kn": 12.0,
     "min_speed_kn": 6.0,
     "rpm_min": 115,

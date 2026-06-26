@@ -1,4 +1,4 @@
-# M/V Al-bazm II — production runtime requirements
+# M/V Atlas — production runtime requirements
 # Pinned versions are intentional (matches what was tested in dev)
 
 # Web framework

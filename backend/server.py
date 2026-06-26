@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
-M/V Al-bazm II Ship Optimization API
+M/V Atlas Ship Optimization API
 Backend: FastAPI + scikit-learn ML + LIVE weather via Open-Meteo
 """
 from __future__ import annotations
 
 import logging
 import os
-import random
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -46,7 +45,7 @@ FRONTEND_BUILD_DIR: Optional[Path] = next(
 # Dubai timezone (UTC+4)
 DUBAI_TZ = timezone(timedelta(hours=4))
 
-from ship_ml import AlbazmMLSystem, MAX_SPEED_KNOTS, OPTIMAL_RPM_MIN, OPTIMAL_RPM_MAX  # noqa: E402
+from ship_ml import AtlasMLSystem, MAX_SPEED_KNOTS, OPTIMAL_RPM_MIN, OPTIMAL_RPM_MAX  # noqa: E402
 from route_manager import RouteManager  # noqa: E402
 from live_weather import fetch_route_weather  # noqa: E402
 from variable_speed import segment_distances, allocate_variable_speeds  # noqa: E402
@@ -60,7 +59,7 @@ logger = logging.getLogger(__name__)
 
 # ----------------------------------------------------------------------------
 app = FastAPI(
-    title="M/V Al-bazm II Optimization API",
+    title="M/V Atlas Optimization API",
     description="Maritime voyage optimization using Machine Learning + live weather",
     version="2.0.0",
 )
@@ -73,7 +72,7 @@ app.add_middleware(
 )
 
 # Globals
-ml_system: Optional[AlbazmMLSystem] = None
+ml_system: Optional[AtlasMLSystem] = None
 route_manager: Optional[RouteManager] = None
 
 
@@ -93,11 +92,11 @@ class OptimizationRequest(BaseModel):
 async def startup_event() -> None:
     global ml_system, route_manager
     logger.info("=" * 60)
-    logger.info("🚢 M/V Al-bazm II Optimization API starting…")
+    logger.info("🚢 M/V Atlas Optimization API starting…")
     logger.info("=" * 60)
 
     try:
-        ml_system = AlbazmMLSystem()
+        ml_system = AtlasMLSystem()
         # Try to load cached model first — saves ~5s on restart
         if ml_system.load_model():
             logger.info("⚡ Using cached ML model (skipped retraining)")
@@ -131,7 +130,7 @@ api_router = APIRouter(prefix="/api")
 
 @api_router.get("/")
 async def root():
-    return {"message": "M/V Al-bazm II Optimization API v2.0", "status": "operational"}
+    return {"message": "M/V Atlas Optimization API v2.0", "status": "operational"}
 
 
 @api_router.get("/health")
@@ -350,13 +349,36 @@ async def optimize_route(req: OptimizationRequest):
         feasibility_msg = "ETA critical — running at constant max speed (12.0 kn)"
         speed_rec = "Constant max speed 12.0 kn (ETA at the edge of feasibility)"
     elif speed_stats.get("mode") == "variable":
-        feasibility_msg = "Feasible — variable speed profile applied for fuel savings"
+        feasibility_msg = "Feasible — variable speed profile applied to meet ETA across segments"
         speed_rec = (f"Variable speed {speed_stats.get('min_speed_kn')}–"
                      f"{speed_stats.get('max_speed_kn')} kn (avg {round(optimal_speed,1)} kn). "
-                     f"Longer segments slowed; shorter ones sped up.")
+                     f"Per-segment speeds are set to meet the deadline; the fuel total below reflects "
+                     f"the overall average speed of {round(optimal_speed,1)} kn, which is the lever that "
+                     f"actually drives fuel consumption (see fuel_savings below).")
     else:
         feasibility_msg = "Feasible" if eta_feasible else "ETA Infeasible — requires faster than max speed"
         speed_rec = f"{round(optimal_speed, 1)} knots constant"
+
+    # --- Real, model-based fuel-savings figure -------------------------------
+    # Validated finding: per-segment speed variation does not reduce fuel versus
+    # constant speed at the same overall average (confirmed both analytically —
+    # for any smooth speed/fuel relationship, constant speed minimizes fuel for a
+    # fixed total time — and empirically against this model). The genuine,
+    # model-supported fuel lever is choosing a LOWER OVERALL average speed when
+    # the schedule allows it ("slow steaming"). So the savings figure compares
+    # the achieved average speed against the constant-max-speed baseline
+    # (the "Fast Route" alternative, alt_configs[1] above), using the same model.
+    fast_route_fuel = alternatives[1]["total_fuel_mt"] if len(alternatives) > 1 else None
+    if fast_route_fuel and fast_route_fuel > 0:
+        real_savings_pct = max(0.0, 100.0 * (fast_route_fuel - fuel_consumption) / fast_route_fuel)
+        fuel_savings_text = (
+            f"{round(real_savings_pct, 1)}% lower fuel than cruising at max speed "
+            f"(12.0 kn), achieved by running at {round(optimal_speed, 1)} kn average — "
+            f"the schedule has enough slack to slow steam. Based on the model's predicted "
+            f"fuel at both speeds, not a per-segment speed-variation effect."
+        )
+    else:
+        fuel_savings_text = "Savings estimate unavailable (fast-route baseline could not be computed)."
 
     result = {
         "success": True,
@@ -391,7 +413,7 @@ async def optimize_route(req: OptimizationRequest):
             "eta_feasibility": feasibility_msg,
             "weather_impact": f"Live wind {weather_data.get('average', {}).get('wind_speed', '?')} m/s @ "
                               f"{weather_data.get('average', {}).get('wind_direction', '?')}° factored in",
-            "fuel_savings": f"Estimated {round(random.uniform(3, 8), 1)}% savings vs. cruise-at-max-speed baseline",
+            "fuel_savings": fuel_savings_text,
             "ml_model_info": f"RandomForestRegressor, R² {ml_system.model_stats.get('test_r2', 0):.3f}",
             "model_confidence": f"MAE {ml_system.model_stats.get('test_mae', 0):.3f} MT on held-out test",
         },
@@ -455,7 +477,7 @@ else:
     @app.get("/")
     async def health_root():
         return {
-            "service": "M/V Al-bazm II Optimization API",
+            "service": "M/V Atlas Optimization API",
             "status": "operational",
             "docs": "/docs",
             "api": "/api",

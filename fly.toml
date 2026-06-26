@@ -3,12 +3,12 @@
 #
 #   1. brew install flyctl   (or curl -L https://fly.io/install.sh | sh)
 #   2. fly auth login
-#   3. fly launch --no-deploy --copy-config --name mv-albazm-ii
+#   3. fly launch --no-deploy --copy-config --name mv-atlas
 #   4. fly deploy
 #
 # Fly's free tier covers small persistent VMs; this fits well within it.
 # ============================================================
-app = "mv-albazm-ii"
+app = "mv-atlas"
 primary_region = "dxb"  # Dubai (closest to operations); change to your region
 
 [build]

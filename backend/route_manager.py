@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Route Manager for M/V Al-bazm II
+Route Manager for M/V Atlas
 Handles waypoint loading and route planning with oil rig/platform restrictions
 """
 
@@ -20,7 +20,7 @@ RESTRICTED_ZONES = [
 ]
 
 class RouteManager:
-    """Manages routes and waypoints for M/V Al-bazm II"""
+    """Manages routes and waypoints for M/V Atlas"""
     
     def __init__(self):
         self.routes = {}

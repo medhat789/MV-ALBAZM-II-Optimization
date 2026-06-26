@@ -140,7 +140,7 @@ const EnhancedShipOptimizer = () => {
             <Ship className="w-6 h-6 md:w-7 md:h-7 text-cyan-400 shrink-0" />
             <div className="min-w-0">
               <h1 className="font-heading font-bold text-sm md:text-xl text-white tracking-tight uppercase truncate">
-                M/V Al-bazm II
+                M/V Atlas
               </h1>
               <p className="text-[10px] md:text-xs text-slate-400 font-body tracking-wide truncate">
                 Maritime Fuel Optimization System
@@ -290,7 +290,7 @@ const EnhancedShipOptimizer = () => {
 
             {/* Quick Stats Sidebar */}
             <div className="space-y-4">
-              <QuickStatCard icon={Ship} label="Vessel" value="M/V Al-bazm II" testId="stat-vessel" />
+              <QuickStatCard icon={Ship} label="Vessel" value="M/V Atlas" testId="stat-vessel" />
               <QuickStatCard icon={Gauge} label="Max Speed" value="12.0 kn" testId="stat-max-speed" />
               <QuickStatCard icon={Activity} label="Optimal RPM" value="115-145" testId="stat-rpm" />
               <QuickStatCard icon={Brain} label="ML Accuracy" value={`${r2pct.toFixed(1)}%`} testId="stat-accuracy" />
@@ -325,7 +325,7 @@ const EnhancedShipOptimizer = () => {
               if (sp.mode === "variable") {
                 label = "VARIABLE";
                 const avg = (rr.total_distance_nm / rr.estimated_duration_hours).toFixed(1);
-                detail = `Variable ${sp.min_speed_kn?.toFixed(1)}–${sp.max_speed_kn?.toFixed(1)} kn · avg ${avg} kn · longer segments slowed to save fuel`;
+                detail = `Variable ${sp.min_speed_kn?.toFixed(1)}–${sp.max_speed_kn?.toFixed(1)} kn · avg ${avg} kn · per-segment speeds set to meet ETA. Fuel total reflects the ${avg} kn overall average — see "Fuel Savings" below for the actual lever.`;
               } else if (sp.mode === "constant-max") {
                 label = "CONSTANT MAX (CRITICAL)";
                 detail = `Running at 12.0 kn throughout — ETA is at the edge of feasibility (need avg ${sp.required_avg_kn} kn)`;
@@ -523,7 +523,7 @@ const EnhancedShipOptimizer = () => {
       </div>
 
       <footer className="max-w-[1800px] mx-auto px-4 md:px-8 py-6 text-center text-xs text-slate-600 font-mono">
-        M/V Al-bazm II Maritime Fuel Optimization &middot; Weather: Open-Meteo (live) &middot; ML: RandomForestRegressor
+        M/V Atlas Maritime Fuel Optimization &middot; Weather: Open-Meteo (live) &middot; ML: RandomForestRegressor
       </footer>
     </div>
   );
