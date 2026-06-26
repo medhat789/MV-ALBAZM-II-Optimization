@@ -320,17 +320,26 @@ const EnhancedShipOptimizer = () => {
             {results.speed_profile && (() => {
               const sp = results.speed_profile;
               const rr = results.recommended_route;
-              let label = "UNIFORM";
-              let detail = `Uniform speed across ${sp.total_distance_nm} NM`;
-              if (sp.mode === "variable") {
-                label = "VARIABLE";
-                const avg = (rr.total_distance_nm / rr.estimated_duration_hours).toFixed(1);
-                detail = `Variable ${sp.min_speed_kn?.toFixed(1)}–${sp.max_speed_kn?.toFixed(1)} kn · avg ${avg} kn · per-segment speeds set to meet ETA. Fuel total reflects the ${avg} kn overall average — see "Fuel Savings" below for the actual lever.`;
-              } else if (sp.mode === "constant-max") {
-                label = "CONSTANT MAX (CRITICAL)";
-                detail = `Running at 12.0 kn throughout — ETA is at the edge of feasibility (need avg ${sp.required_avg_kn} kn)`;
+              const avg = rr.avg_speed_kn ?? (rr.total_distance_nm / rr.estimated_duration_hours).toFixed(1);
+
+              let headline = `${avg} kn average`;
+              let sublabel = "RECOMMENDED SPEED";
+              let isCritical = sp.mode === "constant-max";
+              let scheduleNote = null;
+
+              if (sp.mode === "constant-max") {
+                headline = "12.0 kn — constant max";
+                sublabel = "ETA CRITICAL";
+                scheduleNote = `Running at maximum speed throughout \u2014 ETA is at the edge of feasibility (requires an average of ${sp.required_avg_kn} kn).`;
+              } else if (sp.mode === "variable") {
+                // Headline is always the average — this is the number that drives fuel.
+                // The per-segment schedule is a secondary scheduling aid only; it does not
+                // change the fuel total (validated in Thesis Section 4.6 / Manuscript Section 4.6).
+                scheduleNote = `Per-segment schedule for ETA timing: ${sp.min_speed_kn?.toFixed(1)}\u2013${sp.max_speed_kn?.toFixed(1)} kn across the route. This schedule does not change the fuel total \u2014 fuel is driven by the ${avg} kn average above (see "Fuel Savings" below).`;
+              } else {
+                headline = `${avg} kn — constant`;
               }
-              const isCritical = sp.mode === "constant-max";
+
               const boxCls = isCritical ? "bg-amber-500/10 border-amber-500/30" : "bg-cyan-400/5 border-cyan-400/30";
               const iconCls = isCritical ? "text-amber-400" : "text-cyan-400";
               return (
@@ -338,10 +347,15 @@ const EnhancedShipOptimizer = () => {
                   <div className="flex items-center gap-2 mb-1">
                     <Activity className={`w-4 h-4 ${iconCls}`} />
                     <h4 className="font-mono text-xs uppercase tracking-wider text-slate-300">
-                      Speed Profile: {label}
+                      {sublabel}
                     </h4>
                   </div>
-                  <p className="text-sm text-slate-300 font-mono">{detail}</p>
+                  <p className="text-lg text-white font-mono font-semibold">{headline}</p>
+                  {scheduleNote && (
+                    <p className="text-xs text-slate-400 font-mono mt-2 pt-2 border-t border-slate-700/50">
+                      {scheduleNote}
+                    </p>
+                  )}
                 </div>
               );
             })()}

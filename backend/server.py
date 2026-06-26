@@ -349,12 +349,12 @@ async def optimize_route(req: OptimizationRequest):
         feasibility_msg = "ETA critical — running at constant max speed (12.0 kn)"
         speed_rec = "Constant max speed 12.0 kn (ETA at the edge of feasibility)"
     elif speed_stats.get("mode") == "variable":
-        feasibility_msg = "Feasible — variable speed profile applied to meet ETA across segments"
-        speed_rec = (f"Variable speed {speed_stats.get('min_speed_kn')}–"
-                     f"{speed_stats.get('max_speed_kn')} kn (avg {round(optimal_speed,1)} kn). "
-                     f"Per-segment speeds are set to meet the deadline; the fuel total below reflects "
-                     f"the overall average speed of {round(optimal_speed,1)} kn, which is the lever that "
-                     f"actually drives fuel consumption (see fuel_savings below).")
+        feasibility_msg = f"Feasible at {round(optimal_speed,1)} kn average — meets ETA with schedule slack to spare"
+        speed_rec = (f"Recommended: {round(optimal_speed,1)} kn average. "
+                     f"This average is what drives the fuel total below (see fuel_savings). "
+                     f"A per-segment schedule ({speed_stats.get('min_speed_kn')}–"
+                     f"{speed_stats.get('max_speed_kn')} kn) is also available purely for "
+                     f"ETA timing across waypoints; it does not change the fuel total.")
     else:
         feasibility_msg = "Feasible" if eta_feasible else "ETA Infeasible — requires faster than max speed"
         speed_rec = f"{round(optimal_speed, 1)} knots constant"
